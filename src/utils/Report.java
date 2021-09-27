@@ -20,8 +20,12 @@ public class Report {
     }
 
     //Todo Jean - Desenvoler o front nessa função
-    public static void report(ArrayList<Perceptron> r){
-        r.size();
+    public static void report(ArrayList<Perceptron> r) {
+//        System.out.println(r.size());
+        for (int i = 0; i < r.size(); i++) {
+            System.out.println(r.get(i).getTrainingCount());
+            System.out.println((r.get(i).getEpoch() + 1));
+        }
 
     }
 }

@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         //Perceptron
-        NeuralNetwork nn = new Perceptron(0.01, 1, 0);
+        NeuralNetwork nn = new Perceptron(0.01, 0, 0);
         nn.setStructure(Type.INPUT, 1, 2);
         nn.setStructure(Type.OUTPUT, 1, 1);
         nn.setFunctionActivation(FunctionActivationData.DEGRAU);
@@ -25,12 +25,12 @@ public class Main {
         nn.setInputValues(list);
         nn.connectNeuronIncludingWeigth(0);
         nn.training();
-        nn.save("rede.rn");
-        //Perceptron start
-        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
-        double data1[] = {0, 0};
-        perceptron.setData(data1);
-        perceptron.start();
+//        nn.save("rede.rn");
+//        //Perceptron start
+//        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
+//        double data1[] = {0, 0};
+//        perceptron.setData(data1);
+//        perceptron.start();
 
 
 

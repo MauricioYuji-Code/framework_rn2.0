@@ -209,7 +209,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
             System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
             predictStatus = false;
             trainingCount++;
-            reportTraining();
+            reportTraining(trainingCount);
         }
         predictStatus = true;
         System.out.println("Rede treinada! \nResultado final da saída: " + output.getNeurons().get(0).getOutput() + " Valor esperado: " + predict);
@@ -274,7 +274,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         reports.add(iterationsCount, pStart);
     }
 
-    public void reportTraining() {
+    public void reportTraining(int trainingCount) {
         Perceptron pTraining = new Perceptron();
         pTraining.setSumValue(sum());
         pTraining.setOutputValue(output.getNeurons().get(0).getOutput());
@@ -283,10 +283,11 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pTraining.setNewWeightsValues(newWeightsValues);
         pTraining.setDeltaBias(deltaB);
         pTraining.setNewBias(bias);
+        pTraining.setTrainingCount(trainingCount);
         //Demais iterações
         iterationsCount++;
         reports.add(iterationsCount, pTraining);
-//        System.out.println("Numero de interações " + iterationsCount + " Tamanho do arraylist " + reports.size());
+        System.out.println("Numero de interações " + iterationsCount + " Tamanho do arraylist " + reports.size());
     }
 
 //    //Todo Jean - Desenvoler o front nessa função
@@ -465,6 +466,14 @@ public class Perceptron extends NeuralNetwork implements Serializable {
 
     public void setReports(ArrayList<Perceptron> reports) {
         this.reports = reports;
+    }
+
+    public int getTrainingCount() {
+        return trainingCount;
+    }
+
+    public void setTrainingCount(int trainingCount) {
+        this.trainingCount = trainingCount;
     }
 //    @Override
 //    public Report getData() {
