@@ -21,11 +21,10 @@ public class Report {
 
     //Todo Jean - Desenvoler o front nessa função
     public static void report(ArrayList<Perceptron> r) {
-//        System.out.println(r.size());
-        for (int i = 0; i < r.size(); i++) {
-            System.out.println(r.get(i).getTrainingCount());
-            System.out.println((r.get(i).getEpoch() + 1));
-        }
+
+//            System.out.println("Treinamento: " + r.get(0).getRound());
+//            System.out.println("Epoca: "+(r.get(0).getEpoch() + 1));
+
 
     }
 }

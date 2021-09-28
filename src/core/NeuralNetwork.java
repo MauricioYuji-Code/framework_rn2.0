@@ -346,4 +346,7 @@ public class NeuralNetwork implements Serializable {
 
     }
 
+    public void setPredictValue(double predictValue) {
+    }
+
 }

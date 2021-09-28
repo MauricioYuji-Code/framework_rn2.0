@@ -2,6 +2,7 @@ package network;
 
 import core.*;
 import utils.FunctionActivationData;
+import utils.Helper;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -14,31 +15,30 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private ArrayList<Double> deltaW;
     private double deltaB;
     private double learningRate = 0.1;
-    //    int e = 0;
     private Layer input;
     private Layer output;
     private int sampleCount = 0;
     private ArrayList<double[]> samples;
     //Variaveis auxiliares
     private int samplesCountAux = 1;
-    private int epoch = 0;
+    private int epoch = 1;
     private int trainingCount = 0;
 
     //Teste
 
     //Dados iniciais
-    private ArrayList<Double> initWeightsValues; //ok
+    private ArrayList<Double> initWeightsValues;
     private String typeName = "Perceptron";
-    private int numberLayer; //ok
-    private int numberNeuron; //ok
-    private FunctionActivationData functionActivation; //Refatorar
+    private int numberLayer;
+    private int numberNeuron;
+    private FunctionActivationData functionActivation;
     //Dados de execução do treinamento
     //Feedfoward
-    private ArrayList<Double> inputsValues;//ok
+    private ArrayList<Double> inputsValues;
     private ArrayList<Double> weightsInputValue;
-    private double sumValue; //ok
-    private double outputValue; //ok
-    private boolean predictStatus; //ok
+    private double sumValue;
+    private double outputValue;
+    private boolean predictStatus;
     //Backpropagation
     private double errorValue; //ok
     private ArrayList<Double> deltaWeightsValues; //ok
@@ -47,7 +47,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private double newBias; //ok
     //Report
     private ArrayList<Perceptron> reports = new ArrayList<>();
-    private int iterationsCount = 0;
+    private int round = 0;
 
     public Perceptron() {
 
@@ -96,17 +96,17 @@ public class Perceptron extends NeuralNetwork implements Serializable {
 
         switch (aux) {
             case "INPUT":
-                System.out.println("Camada sendo estruturada " + type);
+//                System.out.println("Camada sendo estruturada " + type);
                 Layer input = new Layer(nNeuron);
                 this.input = input;
                 break;
             case "OUTPUT":
-                System.out.println("Camada sendo estruturada " + type);
+//                System.out.println("Camada sendo estruturada " + type);
                 Layer output = new Layer(nNeuron);
                 this.output = output;
                 break;
             default:
-                System.out.println("Você não utilizou nem input ou output como tipo da camada");
+//                System.out.println("Você não utilizou nem input ou output como tipo da camada");
                 System.exit(0);
         }
 
@@ -117,20 +117,16 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public void setInputValues(ArrayList inputValues) {
         this.samples = inputValues;
         this.inputsValues = inputValues;
-//        System.out.println("Tamanho do input values " + inputValues.size());
-//        System.out.println("Valores da camada de entrada: ");
-        System.out.println("AMOSTRAS DE TREINO!!");
+        System.out.println("Lista de amostras para o treinamento");
         for (int i = 0; i < input.getNeuronsCount(); i++) {
-            input.getNeurons().get(i).setInput(samples.get(sampleCount)[i]); //Exemplo apenas da primeira amostra
+            input.getNeurons().get(i).setInput(samples.get(sampleCount)[i]);
             System.out.println(input.getNeurons().get(i).getNetInput());
         }
     }
 
     public void setData(double[] data){
-//        System.out.println("Tamanho do input values " + inputValues.size());
-//        System.out.println("Valores da camada de entrada: ");
         for (int i = 0; i < input.getNeuronsCount(); i++) {
-            input.getNeurons().get(i).setInput(data[i]); //Exemplo apenas da primeira amostra
+            input.getNeurons().get(i).setInput(data[i]);
             System.out.println(input.getNeurons().get(i).getNetInput());
         }
     }
@@ -138,7 +134,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     //Feedfoward
     @Override
     public void connectNeuronIncludingWeigth(double weigthValue) {
-//        System.out.println("Conectando os neurônios");
         this.initWeightsValues = new ArrayList<>();
         for (int i = 0; i < input.getNeuronsCount(); i++) {
             initWeightsValues.add(i, weigthValue);
@@ -149,31 +144,29 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     }
 
     public void checkNextSamples() {
-        System.out.println("Checando próximas amostras...");
+        Helper.drawLine();
+        System.out.println("Checagem das próximas amostras");
         if (samplesCountAux != samples.size()) {
-            System.out.println("count: " + samplesCountAux + " samples size: " + samples.size());
             System.out.println("Proximas amostras encontradas");
+            Helper.drawLine();
             System.out.println("Começando o treinamento!");
             sampleCount++;
-            System.out.println("samples counter: " + sampleCount);
             setInputValues(samples);
-            //connectNeuronIncludingWeigth(0); //Todo verificar os pesos
             samplesCountAux++;
             training();
         } else {
+            Helper.drawLine();
             System.out.println("Iniando a próxima época");
-            epoch++;
-            System.out.println("numero de epocas: " + epoch);
-//            samplesCountAux = 0;
+            this.epoch++;
             if (trainingCount > 0) {
                 this.sampleCount = 0;
                 this.samplesCountAux = 0;
+                this.round = 0;
                 setInputValues(samples);
             }
             while (trainingCount > 0) {
-                System.out.println("Sample Count: " + sampleCount);
-                System.out.println("Training Count: " + trainingCount);
-//                sampleCount++;
+//                System.out.println("Sample Count: " + sampleCount);
+//                System.out.println("Training Count: " + trainingCount);
                 samplesCountAux++;
                 this.trainingCount = 0;
                 training();
@@ -185,33 +178,43 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public void start() {
         System.out.println("Start Perceptron!!");
         selectFunctionActivation();
-        System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
+//        System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
+        Helper.drawLine();
         if (output.getNeurons().get(0).getOutput() == predict) {
-            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput());
-            System.out.println("Valor da predição: " + predict);
+            Helper.drawLine();
+            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() +  "Valor da predição: " + predict);
+            System.out.println("Valores conferem");
         } else {
+            Helper.drawLine();
+            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() +  "Valor da predição: " + predict);
             System.out.println("Valores não conferem");
         }
 
     }
 
     public void training() {
-        System.out.println("Start Perceptron!!");
+        Helper.drawLine();
+        System.out.println("Começando treinamento do Perceptron");
         selectFunctionActivation();
-        System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
+//        System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
         //Primeira iteração
+        round++;
         reportStart();
         while (output.getNeurons().get(0).getOutput() != predict) {
+            Helper.drawLine();
+            System.out.println("Resultado final da saída: " + output.getNeurons().get(0).getOutput() + " Valor esperado: " + predict);
             System.out.println("A rede precisa de treinamento, resultado não corresponde com o esperado");
-            System.out.println("INICIANDO TREINAMENTO");
+            System.out.println("recomeçando o treinamento");
             backPropagation();
             selectFunctionActivation();
-            System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
+//            System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
             predictStatus = false;
             trainingCount++;
-            reportTraining(trainingCount);
+            round++;
+            reportTraining();
         }
         predictStatus = true;
+        Helper.drawLine();
         System.out.println("Rede treinada! \nResultado final da saída: " + output.getNeurons().get(0).getOutput() + " Valor esperado: " + predict);
         checkNextSamples();
     }
@@ -271,10 +274,15 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pStart.setNewWeightsValues(newWeightsValues);
         pStart.setDeltaBias(deltaB);
         pStart.setNewBias(bias);
-        reports.add(iterationsCount, pStart);
+        pStart.setEpoch(epoch);
+        pStart.setTrainingCount(trainingCount);
+        pStart.setRound(round);
+//        System.out.println("Valor da rodada no Start: " + round);
+//        System.out.println("valor da auxReportPosition: " + auxReportPosition);
+        reports.add(pStart);
     }
 
-    public void reportTraining(int trainingCount) {
+    public void reportTraining() {
         Perceptron pTraining = new Perceptron();
         pTraining.setSumValue(sum());
         pTraining.setOutputValue(output.getNeurons().get(0).getOutput());
@@ -283,11 +291,14 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pTraining.setNewWeightsValues(newWeightsValues);
         pTraining.setDeltaBias(deltaB);
         pTraining.setNewBias(bias);
+        pTraining.setEpoch(epoch);
         pTraining.setTrainingCount(trainingCount);
+        pTraining.setRound(round);
+//        System.out.println("Valor da rodada no Training: " + round);
         //Demais iterações
-        iterationsCount++;
-        reports.add(iterationsCount, pTraining);
-        System.out.println("Numero de interações " + iterationsCount + " Tamanho do arraylist " + reports.size());
+//        auxReportPosition++;
+//        System.out.println("valor da auxReportPosition: " + auxReportPosition);
+        reports.add(pTraining);
     }
 
 //    //Todo Jean - Desenvoler o front nessa função
@@ -475,12 +486,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public void setTrainingCount(int trainingCount) {
         this.trainingCount = trainingCount;
     }
-//    @Override
-//    public Report getData() {
-//        return data;
-//    }
-//
-//    public void setData(Report data) {
-//        this.data = data;
-//    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
 }

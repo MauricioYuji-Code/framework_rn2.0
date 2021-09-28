@@ -4,6 +4,7 @@ import core.*;
 import network.Mlp;
 import network.Perceptron;
 import utils.FunctionActivationData;
+import utils.Helper;
 import utils.Report;
 import utils.Type;
 
@@ -13,15 +14,18 @@ public class Main {
 
     public static void main(String[] args) {
         //Perceptron
+        Helper.drawPerceptron();
         NeuralNetwork nn = new Perceptron(0.01, 0, 0);
         nn.setStructure(Type.INPUT, 1, 2);
         nn.setStructure(Type.OUTPUT, 1, 1);
         nn.setFunctionActivation(FunctionActivationData.DEGRAU);
         double sample1[] = {0, 1};
         double sample2[] = {1, 0};
+//        double sample3[] = {0, 0};
         ArrayList<double[]> list = new ArrayList<>();
         list.add(0, sample1);
         list.add(1, sample2);
+//        list.add(2, sample3);
         nn.setInputValues(list);
         nn.connectNeuronIncludingWeigth(0);
         nn.training();
@@ -58,9 +62,24 @@ public class Main {
 //        mlp.start();
 
         //Teste do report
-//        System.out.println("Teste dos dados: " + nn.getReports().get(0).getFunctionActivaion());
+//        System.out.println("Teste dos dados (Report): " + nn.getReports().size());
+//        System.out.println("Teste dos dados: " + nn.getReports().get(0).getOutputValue());
 //        System.out.println("Teste dos dados: " + nn.getReports().get(1).getOutputValue());
 //        System.out.println("Teste dos dados: " + nn.getReports().get(2).getOutputValue());
+//        System.out.println("Teste dos dados: " + nn.getReports().get(3).getOutputValue());
+
+        System.out.println("Epoca atual : " + nn.getReports().get(0).getEpoch());
+        System.out.println("Epoca atual : " + nn.getReports().get(1).getEpoch());
+        System.out.println("Epoca atual : " + nn.getReports().get(2).getEpoch());
+        System.out.println("Epoca atual : " + nn.getReports().get(3).getEpoch());
+        System.out.println("Epoca atual : " + nn.getReports().get(4).getEpoch());
+        System.out.println("Teste de rodadas: " + nn.getReports().get(0).getRound());
+        System.out.println("Teste de rodadas: " + nn.getReports().get(1).getRound());
+        System.out.println("Teste de rodadas: " + nn.getReports().get(2).getRound());
+        System.out.println("Teste de rodadas: " + nn.getReports().get(3).getRound());
+        System.out.println("Teste de rodadas: " + nn.getReports().get(4).getRound());
+
+
 
 
         //Todo - Fazer relatório em HTML com os dados passados pelo parâmetro
