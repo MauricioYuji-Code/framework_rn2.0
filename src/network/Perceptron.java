@@ -19,22 +19,22 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private Layer output;
     private int sampleCount = 0;
     private ArrayList<double[]> samples;
+    private ArrayList<Double> inputsValues;
     //Variaveis auxiliares
     private int samplesCountAux = 1;
     private int epoch = 1;
     private int trainingCount = 0;
-
-    //Teste
-
     //Dados iniciais
     private ArrayList<Double> initWeightsValues;
+    private ArrayList<Double> initWeightsValuesReport;
     private String typeName = "Perceptron";
     private int numberLayer;
     private int numberNeuron;
     private FunctionActivationData functionActivation;
+    private int samplePosition;
     //Dados de execução do treinamento
     //Feedfoward
-    private ArrayList<Double> inputsValues;
+    private ArrayList<double[]> inputsValuesReport;
     private ArrayList<Double> weightsInputValue;
     private double sumValue;
     private double outputValue;
@@ -155,8 +155,8 @@ public class Perceptron extends NeuralNetwork implements Serializable {
             samplesCountAux++;
             training();
         } else {
-            Helper.drawLine();
-            System.out.println("Iniando a próxima época");
+//            Helper.drawLine();
+//            System.out.println("Iniando a próxima época");
             this.epoch++;
             if (trainingCount > 0) {
                 this.sampleCount = 0;
@@ -277,8 +277,13 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pStart.setEpoch(epoch);
         pStart.setTrainingCount(trainingCount);
         pStart.setRound(round);
-//        System.out.println("Valor da rodada no Start: " + round);
-//        System.out.println("valor da auxReportPosition: " + auxReportPosition);
+        //Todo
+        pStart.setNumberneuron(numberNeuron);
+        pStart.setInputsValuesReport(samples);
+        pStart.setInitWeightsValuesReport(initWeightsValues);
+        pStart.setFunctionActivation(getFunctionActivaion());
+        pStart.setSamplePosition(sampleCount);
+        pStart.setPredictStatus(predictStatus);
         reports.add(pStart);
     }
 
@@ -294,10 +299,13 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pTraining.setEpoch(epoch);
         pTraining.setTrainingCount(trainingCount);
         pTraining.setRound(round);
-//        System.out.println("Valor da rodada no Training: " + round);
-        //Demais iterações
-//        auxReportPosition++;
-//        System.out.println("valor da auxReportPosition: " + auxReportPosition);
+        //Todo
+        pTraining.setNumberneuron(numberNeuron);
+        pTraining.setInputsValuesReport(samples);
+        pTraining.setInitWeightsValuesReport(initWeightsValues);
+        pTraining.setFunctionActivation(getFunctionActivaion());
+        pTraining.setSamplePosition(sampleCount);
+        pTraining.setPredictStatus(predictStatus);
         reports.add(pTraining);
     }
 
@@ -406,7 +414,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         this.outputValue = outputValue;
     }
 
-    public boolean isPredictStatus() {
+    public boolean getPredictStatus() {
         return predictStatus;
     }
 
@@ -475,14 +483,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         this.epoch = epoch;
     }
 
-    public void setReports(ArrayList<Perceptron> reports) {
-        this.reports = reports;
-    }
-
-    public int getTrainingCount() {
-        return trainingCount;
-    }
-
     public void setTrainingCount(int trainingCount) {
         this.trainingCount = trainingCount;
     }
@@ -493,5 +493,30 @@ public class Perceptron extends NeuralNetwork implements Serializable {
 
     public void setRound(int round) {
         this.round = round;
+    }
+
+    public ArrayList<double[]> getInputsValuesReport() {
+        return inputsValuesReport;
+    }
+
+    public void setInputsValuesReport(ArrayList<double[]> inputsValuesReport) {
+        this.inputsValuesReport = inputsValuesReport;
+    }
+
+    public ArrayList<Double> getInitWeightsValuesReport() {
+        return initWeightsValuesReport;
+    }
+
+    public void setInitWeightsValuesReport(ArrayList<Double> initWeightsValuesReport) {
+        this.initWeightsValuesReport = initWeightsValuesReport;
+    }
+
+
+    public int getSamplePosition() {
+        return samplePosition;
+    }
+
+    public void setSamplePosition(int samplePosition) {
+        this.samplePosition = samplePosition;
     }
 }
