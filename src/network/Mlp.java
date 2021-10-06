@@ -174,10 +174,10 @@ public class Mlp extends NeuralNetwork implements Serializable {
         int s = 0;
         for (int i = 0; i < output.getNeuronsCount(); i++) {
             if (output.getNeurons().get(i).getOutput() == predict) {
-                System.out.println("O neuronio de posição " + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (SUCESSO)");
+                System.out.println("O neuronio de posição de saída" + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (SUCESSO)");
                 s++;
             } else {
-                System.out.println("O neuronio de posição " + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (FALHA)");
+                System.out.println("O neuronio de posição de saída" + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (FALHA)");
             }
         }
 

@@ -114,7 +114,6 @@ public class NeuralNetwork implements Serializable {
         }
     }
 
-
 //    public double[] getOutput() {
 //        int i = 0;
 //        for (Neuron c : outputNeurons) {
@@ -124,7 +123,6 @@ public class NeuralNetwork implements Serializable {
 //
 //        return outputBuffer;
 //    }
-
 
     public List<Neuron> getInputNeurons() {
         return this.inputNeurons;
@@ -265,7 +263,6 @@ public class NeuralNetwork implements Serializable {
     public void training() {
 
     }
-
 
     public void connectNeuronIncludingWeigth(double weigthValue) {
     }
