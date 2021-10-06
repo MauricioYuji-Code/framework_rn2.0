@@ -89,6 +89,13 @@ public class Mlp extends NeuralNetwork implements Serializable {
 
     }
 
+    public void setData(double[] data) {
+        for (int i = 0; i < input.getNeuronsCount(); i++) {
+            input.getNeurons().get(i).setInput(data[i]);
+            System.out.println(input.getNeurons().get(i).getNetInput());
+        }
+    }
+
     @Override
     public void connectNeuronIncludingWeigth(double weigthValue) {
         System.out.println("Conectando os neurônios");

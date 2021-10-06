@@ -1,9 +1,7 @@
 package network;
 
 import core.*;
-import utils.FunctionActivationData;
-import utils.Helper;
-
+import Help.Helper;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -40,11 +38,11 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private double outputValue;
     private boolean predictStatus;
     //Backpropagation
-    private double errorValue; //ok
-    private ArrayList<Double> deltaWeightsValues; //ok
-    private ArrayList<Double> newWeightsValues; //ok
-    private double deltaBias; //ok
-    private double newBias; //ok
+    private double errorValue;
+    private ArrayList<Double> deltaWeightsValues;
+    private ArrayList<Double> newWeightsValues;
+    private double deltaBias;
+    private double newBias;
     //Report
     private ArrayList<Perceptron> reports = new ArrayList<>();
     private int round = 0;
@@ -250,7 +248,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         setDeltaWeightsValues(deltaW); //report
 //        System.out.println("Cálculo variação do bias...");
         this.deltaB = deltaBiasCalc(error, learningRate);
-        setDeltaBias(deltaB); //report
 //        System.out.println("Criação do bias..." + deltaB);
 //        System.out.println("Calculando novos pesos...");
         this.newWeightsValues = new ArrayList<>();
@@ -261,7 +258,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         }
 //        System.out.println("Novo bias...");
         this.bias = newBiasCalc(bias, deltaB);
-        setNewBias(bias); //report
 //        System.out.println("Valor do novo bias..." + bias);
     }
 
@@ -308,13 +304,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pTraining.setPredictStatus(predictStatus);
         reports.add(pTraining);
     }
-
-//    //Todo Jean - Desenvoler o front nessa função
-//    @Override
-//    public void report(ArrayList<Perceptron> r){
-//
-//
-//    }
 
 //    *******Getter's and Setter's
 

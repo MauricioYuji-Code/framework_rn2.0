@@ -1,4 +1,4 @@
-package utils;
+package network;
 
 public enum FunctionActivationData {
     DEGRAU(1), SIGMOID(2);

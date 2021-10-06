@@ -3,8 +3,8 @@ package main;
 import core.*;
 import network.Mlp;
 import network.Perceptron;
-import utils.FunctionActivationData;
-import utils.Helper;
+import network.FunctionActivationData;
+import Help.Helper;
 import utils.Report;
 import utils.Type;
 
@@ -13,15 +13,16 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+
         //Perceptron
         Helper.drawPerceptron();
         NeuralNetwork nn = new Perceptron(0.01, 0, 0);
-        nn.setStructure(Type.INPUT, 1, 3);
+        nn.setStructure(Type.INPUT, 1, 2);
         nn.setStructure(Type.OUTPUT, 1, 1);
         nn.setFunctionActivation(FunctionActivationData.DEGRAU);
-        double sample1[] = {0, 1, 0};
-        double sample2[] = {1, 0, 1};
-        double sample3[] = {0, 0, 0};
+        double sample1[] = {0, 1};
+        double sample2[] = {1, 0};
+        double sample3[] = {0, 0};
         ArrayList<double[]> list = new ArrayList<>();
         list.add(0, sample1);
         list.add(1, sample2);
@@ -29,10 +30,11 @@ public class Main {
         nn.setInputValues(list);
         nn.connectNeuronIncludingWeigth(0);
         nn.training();
-//        nn.save("rede.rn");
+        nn.save("rede.rn");
 //        //Perceptron start
 //        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
-//        double data1[] = {0, 0};
+//        double data1[] = {1, 0};
+//        double sample1[] = {0, 1, 0};
 //        perceptron.setData(data1);
 //        perceptron.start();
 
@@ -43,6 +45,7 @@ public class Main {
 //        nn2.setStructure(Type.INPUT, 1, 2);
 //        nn2.setStructure(Type.HIDDEN, 1, 2);
 //        nn2.setStructure(Type.OUTPUT, 1, 1);
+//        nn2.connectNeuronIncludingWeigth(0.1);
 //        double sample3[] = {0, 1};
 //        double sample4[] = {1, 0};
 //        ArrayList<double[]> list2 = new ArrayList<>();
@@ -54,11 +57,8 @@ public class Main {
 //        nn2.save("rede-mlp.rn");
         //MLP start
 //        NeuralNetwork mlp = NeuralNetwork.load("rede-mlp.rn");
-//        double input[] = {0, 1};
-//        double input2[] = {0, 0};
-//        ArrayList<double[]> inputs = new ArrayList<>();
-//        inputs.add(0, input);
-//        mlp.setInputValues(inputs);
+//        double data2[] = {0, 1};
+//        mlp.setData(data2);
 //        mlp.start();
 
         //Teste do report
@@ -83,6 +83,6 @@ public class Main {
 
 
         //Todo - Fazer relatório em HTML com os dados passados pelo parâmetro
-        Report.report(nn.getReports());
+//        Report.report(nn.getReports());
     }
 }

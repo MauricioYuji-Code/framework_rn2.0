@@ -1,5 +1,6 @@
 package utils;
 
+import Help.Helper;
 import network.Perceptron;
 
 import java.util.ArrayList;

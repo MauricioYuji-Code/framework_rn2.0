@@ -1,7 +1,7 @@
 package core;
 
 import network.Perceptron;
-import utils.FunctionActivationData;
+import network.FunctionActivationData;
 import utils.Report;
 
 import java.io.*;
