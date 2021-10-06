@@ -30,7 +30,7 @@ public class Main {
         nn.setInputValues(list);
         nn.connectNeuronIncludingWeigth(0);
         nn.training();
-        nn.save("rede.rn");
+//        nn.save("rede.rn");
 //        //Perceptron start
 //        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
 //        double data1[] = {1, 0};
@@ -41,19 +41,19 @@ public class Main {
 
 
         //MLP treinamento
-//        NeuralNetwork nn2 = new Mlp(0.1, 0, 0);
-//        nn2.setStructure(Type.INPUT, 1, 2);
-//        nn2.setStructure(Type.HIDDEN, 1, 2);
-//        nn2.setStructure(Type.OUTPUT, 1, 1);
-//        nn2.connectNeuronIncludingWeigth(0.1);
-//        double sample3[] = {0, 1};
-//        double sample4[] = {1, 0};
-//        ArrayList<double[]> list2 = new ArrayList<>();
-//        list2.add(0, sample3);
-//        list2.add(1, sample4);
-//        nn2.setInputValues(list2);
-//        nn2.connectNeuronIncludingWeigth(1);
-//        nn2.training();
+        NeuralNetwork nn2 = new Mlp(0.1, 0, 0);
+        nn2.setStructure(Type.INPUT, 1, 2);
+        nn2.setStructure(Type.HIDDEN, 1, 2);
+        nn2.setStructure(Type.OUTPUT, 1, 1);
+        nn2.connectNeuronIncludingWeigth(0.1);
+        double sample4[] = {0, 1};
+        double sample5[] = {1, 0};
+        ArrayList<double[]> list2 = new ArrayList<>();
+        list2.add(0, sample4);
+        list2.add(1, sample5);
+        nn2.setInputValues(list2);
+        nn2.connectNeuronIncludingWeigth(1);
+        nn2.training();
 //        nn2.save("rede-mlp.rn");
         //MLP start
 //        NeuralNetwork mlp = NeuralNetwork.load("rede-mlp.rn");

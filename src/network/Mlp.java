@@ -10,19 +10,6 @@ import java.util.ArrayList;
 
 
 public class Mlp extends NeuralNetwork implements Serializable {
-    //    private ArrayList<Neuron> neurons;
-//    private double error;
-    //    private double output;
-//    private double deltaW1;
-//    private double deltaW2;
-//    private double deltaW3;
-//    private double deltaW4;
-//    private double deltaWO1;
-//    private double deltaWO2;
-//    private double deltaB;
-//    private double lr = 2;
-//    int e = 0;
-    //Novo
     private double learningRate = 0.1;
     private double predict = 0;
     private double bias = 0;
@@ -274,14 +261,4 @@ public class Mlp extends NeuralNetwork implements Serializable {
     public double newWeightCalc(double w, double deltaW) {
         return Math.floor((deltaW + w) * 1000) / 1000;
     }
-// OLD
-//    public double rounding(double output) {
-//        if (output <= 0.001) {
-//            return 0;
-//        } else if (output >= 0.99) {
-//            return 1;
-//        } else {
-//            return output;
-//        }
-//    }
 }

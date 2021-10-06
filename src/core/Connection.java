@@ -1,7 +1,5 @@
 package core;
-
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Connection implements Serializable {
 
@@ -12,13 +10,13 @@ public class Connection implements Serializable {
     public Connection(Neuron fromNeuron, Neuron toNeuron) {
 
         if (fromNeuron == null) {
-            throw new IllegalArgumentException("From neuron in connection cant be null !");
+            System.out.println("From neuron in connection cant be null !");
         } else {
             this.fromNeuron = fromNeuron;
         }
 
         if (toNeuron == null) {
-            throw new IllegalArgumentException("To neuron in connection cant be null!");
+            System.out.println("To neuron in connection cant be null!");
         } else {
             this.toNeuron = toNeuron;
         }
@@ -31,7 +29,7 @@ public class Connection implements Serializable {
         this(fromNeuron, toNeuron);
 
         if (weight == null) {
-            throw new IllegalArgumentException("Connection Weight cant be null!");
+            System.out.println("Connection Weight cant be null!");
         } else {
             this.weight = weight;
         }
@@ -50,7 +48,7 @@ public class Connection implements Serializable {
 
     public final void setWeight(Weight weight) {
         if (weight == null) {
-            throw new IllegalArgumentException("Connection Weight cant be null!");
+            System.out.println("Connection Weight cant be null!");
         } else {
             this.weight = weight;
         }

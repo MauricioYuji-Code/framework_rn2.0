@@ -2,27 +2,31 @@ package network;
 
 import core.*;
 import Help.Helper;
+
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Perceptron extends NeuralNetwork implements Serializable {
+
+    //Variáveis de entrada
     private double bias = 0;
     private double predict = 0;
+    private double learningRate = 0.1;
+    private ArrayList<double[]> samples;
+    private ArrayList<Double> inputsValues;
+    //Variáveis de saida
     private double error;
     private ArrayList<Double> deltaW;
     private double deltaB;
-    private double learningRate = 0.1;
     private Layer input;
     private Layer output;
-    private int sampleCount = 0;
-    private ArrayList<double[]> samples;
-    private ArrayList<Double> inputsValues;
-    //Variaveis auxiliares
+    //Variáveis auxiliares
     private int samplesCountAux = 1;
     private int epoch = 1;
     private int trainingCount = 0;
-    //Dados iniciais
+    private int sampleCount = 0;
+    //Variáveis do report
     private ArrayList<Double> initWeightsValues;
     private ArrayList<Double> initWeightsValuesReport;
     private String typeName = "Perceptron";
@@ -30,7 +34,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private int numberNeuron;
     private FunctionActivationData functionActivation;
     private int samplePosition;
-    //Dados de execução do treinamento
     //Feedfoward
     private ArrayList<double[]> inputsValuesReport;
     private ArrayList<Double> weightsInputValue;
@@ -122,7 +125,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         }
     }
 
-    public void setData(double[] data){
+    public void setData(double[] data) {
         for (int i = 0; i < input.getNeuronsCount(); i++) {
             input.getNeurons().get(i).setInput(data[i]);
             System.out.println(input.getNeurons().get(i).getNetInput());
@@ -180,11 +183,11 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         Helper.drawLine();
         if (output.getNeurons().get(0).getOutput() == predict) {
             Helper.drawLine();
-            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() +  "Valor da predição: " + predict);
+            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() + "Valor da predição: " + predict);
             System.out.println("Valores conferem");
         } else {
             Helper.drawLine();
-            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() +  "Valor da predição: " + predict);
+            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() + "Valor da predição: " + predict);
             System.out.println("Valores não conferem");
         }
 
@@ -217,10 +220,10 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         checkNextSamples();
     }
 
-    public void selectFunctionActivation(){
-        if(getFunctionActivaion().name().equals("DEGRAU")) {
+    public void selectFunctionActivation() {
+        if (getFunctionActivaion().name().equals("DEGRAU")) {
             output.getNeurons().get(0).setOutput(FunctionActivation.degrau(sum()));
-        }else if(getFunctionActivaion().name().equals("SIGMOID")){
+        } else if (getFunctionActivaion().name().equals("SIGMOID")) {
             output.getNeurons().get(0).setOutput(FunctionActivation.sigmoid(sum()));
         }
     }
