@@ -503,7 +503,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         this.initWeightsValuesReport = initWeightsValuesReport;
     }
 
-
     public int getSamplePosition() {
         return samplePosition;
     }

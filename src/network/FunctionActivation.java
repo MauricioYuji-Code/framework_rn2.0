@@ -6,7 +6,8 @@ public class FunctionActivation implements Serializable {
 
     public static double sigmoid(double n) {
 //        System.out.println("Ativando a função Sigmoid");
-        return Math.floor((1 / (1 + Math.exp(-n))) * 100) / 100;
+//        return Math.floor((1 / (1 + Math.exp(-n))) * 100000) / 100000;
+        return 1 / (1 + Math.exp(-n));
     }
 
     public static double degrau(double n) {

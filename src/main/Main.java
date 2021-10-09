@@ -15,21 +15,21 @@ public class Main {
     public static void main(String[] args) {
 
         //Perceptron
-        Helper.drawPerceptron();
-        NeuralNetwork nn = new Perceptron(0.01, 0, 0);
-        nn.setStructure(Type.INPUT, 1, 2);
-        nn.setStructure(Type.OUTPUT, 1, 1);
-        nn.setFunctionActivation(FunctionActivationData.DEGRAU);
-        double sample1[] = {0, 1};
-        double sample2[] = {1, 0};
-        double sample3[] = {0, 0};
-        ArrayList<double[]> list = new ArrayList<>();
-        list.add(0, sample1);
-        list.add(1, sample2);
-        list.add(2, sample3);
-        nn.setInputValues(list);
-        nn.connectNeuronIncludingWeigth(0);
-        nn.training();
+//        Helper.drawPerceptron();
+//        NeuralNetwork nn = new Perceptron(0.01, 0, 0);
+//        nn.setStructure(Type.INPUT, 1, 2);
+//        nn.setStructure(Type.OUTPUT, 1, 1);
+//        nn.setFunctionActivation(FunctionActivationData.DEGRAU);
+//        double sample1[] = {0, 1};
+//        double sample2[] = {1, 0};
+//        double sample3[] = {0, 0};
+//        ArrayList<double[]> list = new ArrayList<>();
+//        list.add(0, sample1);
+//        list.add(1, sample2);
+//        list.add(2, sample3);
+//        nn.setInputValues(list);
+//        nn.connectNeuronIncludingWeigth(0);
+//        nn.training();
 //        nn.save("rede.rn");
 //        //Perceptron start
 //        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
@@ -39,20 +39,19 @@ public class Main {
 //        perceptron.start();
 
 
-
         //MLP treinamento
-        NeuralNetwork nn2 = new Mlp(0.1, 0, 0);
-        nn2.setStructure(Type.INPUT, 1, 2);
+        NeuralNetwork nn2 = new Mlp(0.9, 0.98, 0);
+        nn2.setStructure(Type.INPUT, 1, 3);
         nn2.setStructure(Type.HIDDEN, 1, 2);
         nn2.setStructure(Type.OUTPUT, 1, 1);
-        nn2.connectNeuronIncludingWeigth(0.1);
-        double sample4[] = {0, 1};
-        double sample5[] = {1, 0};
+        nn2.connectNeuronIncludingWeigth(1);
+        nn2.setFunctionActivation(FunctionActivationData.SIGMOID);
+        double sample4[] = {12, 3, 0.78};
+//        double sample5[] = {0, 1, 0, 1, 6};
         ArrayList<double[]> list2 = new ArrayList<>();
         list2.add(0, sample4);
-        list2.add(1, sample5);
+//        list2.add(1, sample5);
         nn2.setInputValues(list2);
-        nn2.connectNeuronIncludingWeigth(1);
         nn2.training();
 //        nn2.save("rede-mlp.rn");
         //MLP start
@@ -78,8 +77,6 @@ public class Main {
 //        System.out.println("Teste de rodadas: " + nn.getReports().get(2).getRound());
 //        System.out.println("Teste de rodadas: " + nn.getReports().get(3).getRound());
 //        System.out.println("Teste de rodadas: " + nn.getReports().get(4).getRound());
-
-
 
 
         //Todo - Fazer relatório em HTML com os dados passados pelo parâmetro
