@@ -141,6 +141,70 @@ public class ImageU {
 
     }
 
+    public void criaLinhasPontos() {
+        pontos = new ArrayList<>();
+//        valoresSaida();
+        System.out.println(valoresSaida());
+
+        porcentagem = 0.1;
+
+        oix = 0;
+        ofx = auxList.size();
+        dix = (int) (x0 + margem() + 1);
+        dfx = x1;
+
+        oiy = getMaxValue();
+        ofy = getMinValue();
+        diy = y0;
+        dfy = (int) (y1 - margem());
+
+        for (int i = 0; i < auxList.size(); i++) {
+            x = i;
+            mapeamentoX();
+
+            // System.out.println(Prx);
+            for (int j = 0; j < auxList.size(); j++) {
+                y = auxList.get(i);
+                mapeamentoY();
+                pontos.add(new Point((int) pxr, (int) pyr));
+            }
+        }
+
+        for (int a = 0; a < pontos.size() - 1; a++) {
+            render.setColor(Color.blue);
+            render.drawLine(pontos.get(a).x, pontos.get(a).y, pontos.get(a + 1).x, pontos.get(a + 1).y);
+        }
+    }
+
+    public void criaPontos() {
+
+        porcentagem = 0.1;
+
+        oix = 0;
+        ofx = auxList.size();
+        dix = (int) (x0 + margem());
+        dfx = x1;
+
+        oiy = getMaxValue();
+        ofy = getMinValue();
+        diy = y0;
+        dfy = (int) (y1 - margem());
+
+        for (int i = 0; i < auxList.size(); i++) {
+            x = i;
+            mapeamentoX();
+
+
+            for (int j = 0; j < auxList.size(); j++) {
+                y = auxList.get(i);
+                mapeamentoY();
+
+                render.setColor(Color.RED);
+                render.fillOval((int) pxr - 4, (int) pyr - 4, 8, 8);
+            }
+        }
+    }
+
     public void criaGrade() {
 
         Stroke oldStroke = render.getStroke();
@@ -215,70 +279,6 @@ public class ImageU {
         render.setStroke(oldStroke);
     }
 
-    public void criaLinhasPontos() {
-        pontos = new ArrayList<>();
-        valoresSaida();
-        System.out.println(valoresSaida());
-
-        porcentagem = 0.1;
-
-        oix = 0;
-        ofx = auxList.size();
-        dix = (int) (x0 + margem() + 1);
-        dfx = x1;
-
-        oiy = getMaxValue();
-        ofy = getMinValue();
-        diy = y0;
-        dfy = (int) (y1 - margem());
-
-        for (int i = 0; i < auxList.size(); i++) {
-            x = i;
-            mapeamentoX();
-
-            // System.out.println(Prx);
-            for (int j = 0; j < auxList.size(); j++) {
-                y = auxList.get(i);
-                mapeamentoY();
-                pontos.add(new Point((int) pxr, (int) pyr));
-            }
-        }
-
-        for (int a = 0; a < pontos.size() - 1; a++) {
-            render.setColor(Color.blue);
-            render.drawLine(pontos.get(a).x, pontos.get(a).y, pontos.get(a + 1).x, pontos.get(a + 1).y);
-        }
-    }
-
-    public void criaPontos() {
-
-        porcentagem = 0.1;
-
-        oix = 0;
-        ofx = auxList.size();
-        dix = (int) (x0 + margem());
-        dfx = x1;
-
-        oiy = getMaxValue();
-        ofy = getMinValue();
-        diy = y0;
-        dfy = (int) (y1 - margem());
-
-        for (int i = 0; i < auxList.size(); i++) {
-            x = i;
-            mapeamentoX();
-
-
-            for (int j = 0; j < auxList.size(); j++) {
-                y = auxList.get(i);
-                mapeamentoY();
-
-                render.setColor(Color.RED);
-                render.fillOval((int) pxr - 4, (int) pyr - 4, 8, 8);
-            }
-        }
-    }
-
     public void saveImage(String nameGraph) {
         try {
             ImageIO.write(report, "PNG", new File(nameGraph + ".png"));
@@ -288,15 +288,14 @@ public class ImageU {
     }
 
     public void criaImagem(String nameGraph) {
-
+        valoresSaida();
         background();
         whiteBrackground();
-        criaLinhasPontos();
         criaGrade();
         eixoXY();
+        criaLinhasPontos();
         criaPontos();
         saveImage(nameGraph);
-
     }
 
 }

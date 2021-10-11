@@ -4,6 +4,8 @@ import core.*;
 import network.Perceptron;
 import network.FunctionActivationData;
 import Help.Helper;
+import utils.ImageU;
+import utils.PixelCalc;
 import utils.Report;
 import utils.Type;
 
@@ -12,10 +14,9 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-
         //Perceptron
         Helper.drawPerceptron();
-        NeuralNetwork nn = new Perceptron(0.1, 0, 0);
+        NeuralNetwork nn = new Perceptron(0.01, 0, 0);
         nn.setStructure(Type.INPUT, 1, 2);
         nn.setStructure(Type.OUTPUT, 1, 1);
         nn.setFunctionActivation(FunctionActivationData.DEGRAU);
@@ -60,7 +61,33 @@ public class Main {
 //        mlp.start();
 
         //Teste do report
-//        System.out.println("Teste dos dados (Report): " + nn.getReports().size());
+
+        System.out.println("Teste dos dados (Peso velho): " + nn.getReports().get(1).getInitWeightsValuesReport().get(1));
+        System.out.println("Teste dos dados (Peso novo): " + nn.getReports().get(2).getNewWeightsValues().get(1));
+        System.out.println("Teste dos dados (function activation result): " + nn.getReports().get(0).getFunctionActivationResult());
+        System.out.println("Teste dos dados (structure input): " + nn.getReports().get(0).getStructureInputReport());
+        System.out.println("Teste dos dados (structure output): " + nn.getReports().get(0).getStructureOutputReport());
+        System.out.println("Teste dos dados (delta peso): " + nn.getReports().get(1).getDeltaWeightsValues().get(1));
+
+
+//        System.out.println("Teste dos dados (Report): " + nn.getReports().get(1).getPredictStatus());
+//        System.out.println("Teste dos dados (Report): " + nn.getReports().get(0).getInputsValuesReport().get(0)[0]);
+//        System.out.println("Teste dos dados (Report): " + nn.getReports().get(0).getInputsValuesReport().get(0)[1]);
+
+        //InputValues
+//        int aux = 0;
+//        String teste = "";
+//        while (aux != nn.getReports().get(0).getInputsValuesReport().size()) {
+//            for (int i = 0; i < nn.getReports().get(0).getInputsValuesReport().get(0).length; i++) {
+//                System.out.println(nn.getReports().get(0).getInputsValuesReport().get(aux)[i]);
+//                teste +=nn.getReports().get(0).getInputsValuesReport().get(aux)[i];
+//            }
+//            if (aux != nn.getReports().get(0).getInputsValuesReport().get(0).length){
+//            }
+//            aux++;
+//        }
+//        System.out.println(teste);
+
 //        System.out.println("Teste dos dados: " + nn.getReports().get(0).getOutputValue());
 //        System.out.println("Teste dos dados: " + nn.getReports().get(1).getOutputValue());
 //        System.out.println("Teste dos dados: " + nn.getReports().get(2).getOutputValue());
@@ -79,7 +106,7 @@ public class Main {
 
 
         //Todo - Fazer relatório em HTML com os dados passados pelo parâmetro
-        Report.report(nn.getReports(), "myReport");
+//        Report.report(nn.getReports(), "myReport");
 
         //Todo - gráfico
 //
@@ -87,7 +114,6 @@ public class Main {
 //        ImageU imageu = new ImageU(pixelcalc, nn.getReports());
 //        pixelcalc.Dados();
 //        imageu.criaImagem("Graph");
-
 
     }
 }

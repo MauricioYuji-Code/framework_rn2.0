@@ -283,12 +283,8 @@ public class Mlp extends NeuralNetwork implements Serializable {
 //        return Math.floor((deltaW + w) * 1000) / 1000;
         return deltaW + w;
     }
-
-
-    //Todo Fazer a função de ativação de forma genérca
     //Todo realizar as epochs
     //Todo solução para duas saídas
-
     /*GETTERS E SETTERS*/
     public FunctionActivationData getFunctionActivation() {
         return functionActivation;
