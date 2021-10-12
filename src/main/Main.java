@@ -61,18 +61,44 @@ public class Main {
 //        mlp.start();
 
         //Teste do report
-
-        System.out.println("Teste dos dados (Peso velho): " + nn.getReports().get(1).getInitWeightsValuesReport().get(1));
+        System.out.println("Teste dos dados (Peso velho): " + nn.getReports().get(0).getInitWeightsValuesReport().get(1));
         System.out.println("Teste dos dados (Peso novo): " + nn.getReports().get(2).getNewWeightsValues().get(1));
+        System.out.println("Teste dos dados (delta peso): " + nn.getReports().get(1).getDeltaWeightsValues().get(1));
+        //Só usar o size como referencia
         System.out.println("Teste dos dados (function activation result): " + nn.getReports().get(0).getFunctionActivationResult());
+        //pode só usar o 0
         System.out.println("Teste dos dados (structure input): " + nn.getReports().get(0).getStructureInputReport());
         System.out.println("Teste dos dados (structure output): " + nn.getReports().get(0).getStructureOutputReport());
-        System.out.println("Teste dos dados (delta peso): " + nn.getReports().get(1).getDeltaWeightsValues().get(1));
 
 
-//        System.out.println("Teste dos dados (Report): " + nn.getReports().get(1).getPredictStatus());
-//        System.out.println("Teste dos dados (Report): " + nn.getReports().get(0).getInputsValuesReport().get(0)[0]);
-//        System.out.println("Teste dos dados (Report): " + nn.getReports().get(0).getInputsValuesReport().get(0)[1]);
+
+        //Peso feedfoward
+//        int aux = 0;
+//        while (aux != nn.getReports().size()) {
+//            for (int i = 0; i < nn.getReports().get(0).getInitWeightsValuesReport().size(); i++) {
+//                System.out.println("(Peso velho): " + nn.getReports().get(aux).getInitWeightsValuesReport().get(i));
+//            }
+//            aux ++;
+//        }
+
+        //Peso backpropagation
+//        int aux = 1;
+//        while (aux != nn.getReports().size()) {
+//            for (int i = 0; i < nn.getReports().get(1).getNewWeightsValues().size(); i++) {
+//                System.out.println("(Peso novo): " + nn.getReports().get(aux).getNewWeightsValues().get(i));
+//            }
+//            aux ++;
+//        }
+
+        //Delta peso
+        int aux = 1;
+        while (aux != nn.getReports().size()) {
+            for (int i = 0; i < nn.getReports().get(1).getDeltaWeightsValues().size(); i++) {
+                System.out.println("(Delta peso): " + nn.getReports().get(aux).getDeltaWeightsValues().get(i));
+            }
+            aux ++;
+        }
+
 
         //InputValues
 //        int aux = 0;
@@ -88,28 +114,10 @@ public class Main {
 //        }
 //        System.out.println(teste);
 
-//        System.out.println("Teste dos dados: " + nn.getReports().get(0).getOutputValue());
-//        System.out.println("Teste dos dados: " + nn.getReports().get(1).getOutputValue());
-//        System.out.println("Teste dos dados: " + nn.getReports().get(2).getOutputValue());
-//        System.out.println("Teste dos dados: " + nn.getReports().get(3).getOutputValue());
-
-//        System.out.println("Epoca atual : " + nn.getReports().get(0).getEpoch());
-//        System.out.println("Epoca atual : " + nn.getReports().get(1).getEpoch());
-//        System.out.println("Epoca atual : " + nn.getReports().get(2).getEpoch());
-//        System.out.println("Epoca atual : " + nn.getReports().get(3).getEpoch());
-//        System.out.println("Epoca atual : " + nn.getReports().get(4).getEpoch());
-//        System.out.println("Teste de rodadas: " + nn.getReports().get(0).getRound());
-//        System.out.println("Teste de rodadas: " + nn.getReports().get(1).getRound());
-//        System.out.println("Teste de rodadas: " + nn.getReports().get(2).getRound());
-//        System.out.println("Teste de rodadas: " + nn.getReports().get(3).getRound());
-//        System.out.println("Teste de rodadas: " + nn.getReports().get(4).getRound());
-
-
         //Todo - Fazer relatório em HTML com os dados passados pelo parâmetro
 //        Report.report(nn.getReports(), "myReport");
 
         //Todo - gráfico
-//
 //        PixelCalc pixelcalc = new PixelCalc();
 //        ImageU imageu = new ImageU(pixelcalc, nn.getReports());
 //        pixelcalc.Dados();
