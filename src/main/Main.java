@@ -61,27 +61,27 @@ public class Main {
 //        mlp.start();
 
         //Teste do report
-        System.out.println("Teste dos dados (Peso velho): " + nn.getReports().get(0).getInitWeightsValuesReport().get(1));
-        System.out.println("Teste dos dados (Peso novo): " + nn.getReports().get(2).getNewWeightsValues().get(1));
-        System.out.println("Teste dos dados (delta peso): " + nn.getReports().get(1).getDeltaWeightsValues().get(1));
+        System.out.println("Teste dos dados (Pesos (Input layer)): " + nn.getReports().get(0).getInitWeightsValuesReport().get(1));
+        System.out.println("Teste dos dados (Novo peso): " + nn.getReports().get(2).getNewWeightsValues().get(1));
+        System.out.println("Teste dos dados (Delta peso): " + nn.getReports().get(1).getDeltaWeightsValues().get(1));
         //Só usar o size como referencia
-        System.out.println("Teste dos dados (function activation result): " + nn.getReports().get(0).getFunctionActivationResult());
+        System.out.println("Teste dos dados (Resultado da função de ativação): " + nn.getReports().get(0).getFunctionActivationResult());
         //pode só usar o 0
-        System.out.println("Teste dos dados (structure input): " + nn.getReports().get(0).getStructureInputReport());
-        System.out.println("Teste dos dados (structure output): " + nn.getReports().get(0).getStructureOutputReport());
+        System.out.println("Teste dos dados (Structure:): " + nn.getReports().get(0).getStructureInputReport());
+        System.out.println("Teste dos dados (Structure:): " + nn.getReports().get(0).getStructureOutputReport());
 
 
 
-        //Peso feedfoward
-//        int aux = 0;
-//        while (aux != nn.getReports().size()) {
-//            for (int i = 0; i < nn.getReports().get(0).getInitWeightsValuesReport().size(); i++) {
-//                System.out.println("(Peso velho): " + nn.getReports().get(aux).getInitWeightsValuesReport().get(i));
-//            }
-//            aux ++;
-//        }
+        //Pesos (Input layer)
+        int aux = 0;
+        while (aux != nn.getReports().size()) {
+            for (int i = 0; i < nn.getReports().get(0).getInitWeightsValuesReport().size(); i++) {
+                System.out.println("(Peso velho): " + nn.getReports().get(aux).getInitWeightsValuesReport().get(i));
+            }
+            aux ++;
+        }
 
-        //Peso backpropagation
+        //Novo peso
 //        int aux = 1;
 //        while (aux != nn.getReports().size()) {
 //            for (int i = 0; i < nn.getReports().get(1).getNewWeightsValues().size(); i++) {
@@ -91,13 +91,13 @@ public class Main {
 //        }
 
         //Delta peso
-        int aux = 1;
-        while (aux != nn.getReports().size()) {
-            for (int i = 0; i < nn.getReports().get(1).getDeltaWeightsValues().size(); i++) {
-                System.out.println("(Delta peso): " + nn.getReports().get(aux).getDeltaWeightsValues().get(i));
-            }
-            aux ++;
-        }
+//        int aux = 1;
+//        while (aux != nn.getReports().size()) {
+//            for (int i = 0; i < nn.getReports().get(1).getDeltaWeightsValues().size(); i++) {
+//                System.out.println("(Delta peso): " + nn.getReports().get(aux).getDeltaWeightsValues().get(i));
+//            }
+//            aux ++;
+//        }
 
 
         //InputValues
