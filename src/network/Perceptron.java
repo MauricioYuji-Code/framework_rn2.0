@@ -53,6 +53,9 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     //Report
     private ArrayList<Perceptron> reports = new ArrayList<>();
     private int round = 0;
+    //    private Layer inputReport;
+    private ArrayList<Double> inputReport;
+    private int nTraining = 0;
 
     public Perceptron() {
 
@@ -129,10 +132,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public void setInputValues(ArrayList inputValues) {
         this.samples = inputValues;
         this.inputsValues = inputValues;
+        inputReport = new ArrayList<>();
         System.out.println("Lista de amostras para o treinamento");
         for (int i = 0; i < input.getNeuronsCount(); i++) {
             input.getNeurons().get(i).setInput(samples.get(sampleCount)[i]);
             System.out.println(input.getNeurons().get(i).getNetInput());
+            inputReport.add(i, input.getNeurons().get(i).getNetInput());
         }
     }
 
@@ -222,6 +227,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
             selectFunctionActivation();
 //            System.out.println("Valor do neurônio de saída: " + output.getNeurons().get(0).getOutput());
             trainingCount++;
+            nTraining++;
             round++;
             if (output.getNeurons().get(0).getOutput() == predict) {
                 predictStatus = true;
@@ -307,6 +313,8 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pStart.setFunctionActivationResult(functionActivationResult);
         pStart.setStructureInputReport(numberNeuronInput, numberLayerInput, typeLayerNameInput);
         pStart.setStructureOutputReport(numberNeuronOutput, numberLayerOutput, typeLayerNameOutput);
+        pStart.setInputReport(inputReport);
+        pStart.setnTraining(nTraining);
         reports.add(pStart);
     }
 
@@ -329,6 +337,8 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pTraining.setSamplePosition(sampleCount);
         pTraining.setPredictStatus(predictStatus);
         pTraining.setFunctionActivationResult(functionActivationResult);
+        pTraining.setInputReport(inputReport);
+        pTraining.setnTraining(nTraining);
         reports.add(pTraining);
     }
 
@@ -556,10 +566,27 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     }
 
     public String getStructureInputReport() {
-        return typeLayerNameInput + " " +  (numberLayerInput) +  " " +(numberNeuronInput);
+        return typeLayerNameInput + " " + (numberLayerInput) + " " + (numberNeuronInput);
     }
 
     public String getStructureOutputReport() {
-        return typeLayerNameOutput +  " " +(numberLayerOutput) + " " +(numberNeuronOutput);
+        return typeLayerNameOutput + " " + (numberLayerOutput) + " " + (numberNeuronOutput);
     }
+
+    public ArrayList<Double> getInputReport() {
+        return inputReport;
+    }
+
+    public void setInputReport(ArrayList<Double> inputReport) {
+        this.inputReport = inputReport;
+    }
+
+    public int getnTraining() {
+        return nTraining;
+    }
+
+    public void setnTraining(int nTraining) {
+        this.nTraining = nTraining;
+    }
+
 }

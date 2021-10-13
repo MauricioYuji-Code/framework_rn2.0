@@ -69,17 +69,26 @@ public class Main {
         //pode só usar o 0
         System.out.println("Teste dos dados (Structure:): " + nn.getReports().get(0).getStructureInputReport());
         System.out.println("Teste dos dados (Structure:): " + nn.getReports().get(0).getStructureOutputReport());
+        System.out.println("Teste dos dados (Training numbers:): " + nn.getReports().get(1).getnTraining());
+        System.out.println("Teste dos dados (Input Layer:): " + nn.getReports().get(0).getInputReport().get(0));
 
 
-
-        //Pesos (Input layer)
+        //Input Layer:
         int aux = 0;
         while (aux != nn.getReports().size()) {
-            for (int i = 0; i < nn.getReports().get(0).getInitWeightsValuesReport().size(); i++) {
-                System.out.println("(Peso velho): " + nn.getReports().get(aux).getInitWeightsValuesReport().get(i));
+            for (int i = 0; i < nn.getReports().get(0).getInputReport().size(); i++) {
+                System.out.println("(Input Layer): " + nn.getReports().get(aux).getInputReport().get(i));
             }
-            aux ++;
+            aux++;
         }
+        //Pesos (Input layer)
+//        int aux = 0;
+//        while (aux != nn.getReports().size()) {
+//            for (int i = 0; i < nn.getReports().get(0).getInitWeightsValuesReport().size(); i++) {
+//                System.out.println("(Peso velho): " + nn.getReports().get(aux).getInitWeightsValuesReport().get(i));
+//            }
+//            aux ++;
+//        }
 
         //Novo peso
 //        int aux = 1;
