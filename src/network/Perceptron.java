@@ -56,7 +56,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private int samplePosition;
     //Assistants for report
     private ArrayList<Perceptron> reportFeedfoward = new ArrayList<>();
-    Map<Integer, Perceptron> reportBackpropagation = new HashMap<>();
+    private Map<Integer, Perceptron> reportBackpropagation = new HashMap<>();
     private int round = 0;
     private ArrayList<Double> listInputData;
     private int nTraining = 0;
@@ -245,10 +245,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public void selectFunctionActivation() {
         if (getFunctionActivaion().name().equals("DEGRAU")) {
             output.getNeurons().get(0).setOutput(FunctionActivation.degrau(sum()));
-            functionActivationResult = FunctionActivation.degrau(sum());
+            this.functionActivationResult = FunctionActivation.degrau(sum());
+            this.sumValue = sum();
         } else if (getFunctionActivaion().name().equals("SIGMOID")) {
             output.getNeurons().get(0).setOutput(FunctionActivation.sigmoid(sum()));
-            functionActivationResult = FunctionActivation.degrau(sum());
+            this.functionActivationResult = FunctionActivation.degrau(sum());
+            this.sumValue = sum();
         }
     }
 
@@ -279,7 +281,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
 
     public void reportFeedfoward() {
         Perceptron pFeedfoward = new Perceptron();
-        pFeedfoward.setSumValue(sum());
+        pFeedfoward.setSumValue(sumValue);
         pFeedfoward.setOutputValue(output.getNeurons().get(0).getOutput());
         pFeedfoward.setNewBias(bias);
         pFeedfoward.setEpoch(epoch);
@@ -324,143 +326,74 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         reportBackpropagation.put((reportFeedfoward.size() - 1), pBackPropagation);
     }
 
-//    *******Getter's and Setter's
+    /*************************GETTERS*************************/
 
     public ArrayList<double[]> getSamplesValues() {
         return samples;
-    }
-
-    private void setSamplesValues(ArrayList<double[]> samplesValues) {
-        this.samples = samplesValues;
     }
 
     public ArrayList<Double> getInitWeightsValues() {
         return initWeightsValues;
     }
 
-    private void setInitWeightsValues(ArrayList<Double> initWeightsValues) {
-        this.initWeightsValues = initWeightsValues;
-    }
-
     public double getLearningRateValue() {
         return learningRate;
-    }
-
-    private void setLearningRateValue(double learningRateValue) {
-        this.learningRate = learningRateValue;
     }
 
     public double getPredictValue() {
         return predict;
     }
 
-    public void setPredictValue(double predictValue) {
-        this.predict = predictValue;
-    }
-
     public double getBiasValue() {
         return bias;
-    }
-
-    private void setBiasValue(double biasValue) {
-        this.bias = biasValue;
     }
 
     public String getTypeName() {
         return typeName;
     }
 
-//    private void setTypeName(String typeName) {
-//        this.typeName = typeName;
-//    }
-
     public ArrayList<Double> getInputsValues() {
         return inputsValues;
-    }
-
-    private void setInputsValues(ArrayList<Double> inputsValues) {
-        this.inputsValues = inputsValues;
     }
 
     public ArrayList<Double> getWeightsInputValue() {
         return weightsInputValue;
     }
 
-    private void setWeightsInputValue(ArrayList<Double> weightsInputValue) {
-        this.weightsInputValue = weightsInputValue;
-    }
-
     public double getSumValue() {
         return sumValue;
-    }
-
-    private void setSumValue(double sumValue) {
-        this.sumValue = sumValue;
     }
 
     public double getOutputValue() {
         return outputValue;
     }
 
-    private void setOutputValue(double outputValue) {
-        this.outputValue = outputValue;
-    }
-
     public boolean getPredictStatus() {
         return predictStatus;
-    }
-
-    private void setPredictStatus(boolean predictStatus) {
-        this.predictStatus = predictStatus;
     }
 
     public double getErrorValue() {
         return errorValue;
     }
 
-    private void setErrorValue(double errorValue) {
-        this.errorValue = errorValue;
+    public double getDeltaBias() {
+        return deltaBias;
     }
 
     public ArrayList<Double> getDeltaWeightsValues() {
         return deltaWeightsValues;
     }
 
-    private void setDeltaWeightsValues(ArrayList<Double> deltaWeightsValues) {
-        this.deltaWeightsValues = deltaWeightsValues;
-    }
-
     public ArrayList<Double> getNewWeightsValues() {
         return newWeightsValues;
-    }
-
-    private void setNewWeightsValues(ArrayList<Double> newWeightsValues) {
-        this.newWeightsValues = newWeightsValues;
-    }
-
-    public double getDeltaBias() {
-        return deltaBias;
-    }
-
-    private void setDeltaBias(double deltaBias) {
-        this.deltaBias = deltaBias;
     }
 
     public double getNewBias() {
         return newBias;
     }
 
-    private void setNewBias(double newBias) {
-        this.newBias = newBias;
-    }
-
     public FunctionActivationData getFunctionActivaion() {
         return functionActivation;
-    }
-
-    @Override
-    public void setFunctionActivation(FunctionActivationData functionActivation) {
-        this.functionActivation = functionActivation;
     }
 
     public ArrayList<Perceptron> getReportFeedfoward() {
@@ -471,6 +404,117 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         return epoch;
     }
 
+    public int getSamplePosition() {
+        return samplePosition;
+    }
+
+    public ArrayList<double[]> getInputsValuesReport() {
+        return inputsValuesReport;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public ArrayList<Double> getInitWeightsValuesReport() {
+        return initWeightsValuesReport;
+    }
+
+    public String getStructureInputReport() {
+        return typeLayerNameInput + " " + (numberLayerInput) + " " + (numberNeuronInput);
+    }
+
+    public String getStructureOutputReport() {
+        return typeLayerNameOutput + " " + (numberLayerOutput) + " " + (numberNeuronOutput);
+    }
+
+    public ArrayList<Double> getListInputData() {
+        return listInputData;
+    }
+
+    public double getFunctionActivationResult() {
+        return functionActivationResult;
+    }
+
+    public int getnTraining() {
+        return nTraining;
+    }
+
+    public Map<Integer, Perceptron> getReportBackpropagation() {
+        return reportBackpropagation;
+    }
+
+    /*************************SETTERS*************************/
+
+    private void setSamplesValues(ArrayList<double[]> samplesValues) {
+        this.samples = samplesValues;
+    }
+
+    private void setInitWeightsValues(ArrayList<Double> initWeightsValues) {
+        this.initWeightsValues = initWeightsValues;
+    }
+
+    private void setLearningRateValue(double learningRateValue) {
+        this.learningRate = learningRateValue;
+    }
+
+    public void setPredictValue(double predictValue) {
+        this.predict = predictValue;
+    }
+
+    private void setBiasValue(double biasValue) {
+        this.bias = biasValue;
+    }
+
+//    private void setTypeName(String typeName) {
+//        this.typeName = typeName;
+//    }
+
+    private void setInputsValues(ArrayList<Double> inputsValues) {
+        this.inputsValues = inputsValues;
+    }
+
+    private void setWeightsInputValue(ArrayList<Double> weightsInputValue) {
+        this.weightsInputValue = weightsInputValue;
+    }
+
+    private void setSumValue(double sumValue) {
+        this.sumValue = sumValue;
+    }
+
+    private void setOutputValue(double outputValue) {
+        this.outputValue = outputValue;
+    }
+
+    private void setPredictStatus(boolean predictStatus) {
+        this.predictStatus = predictStatus;
+    }
+
+    private void setErrorValue(double errorValue) {
+        this.errorValue = errorValue;
+    }
+
+    private void setDeltaWeightsValues(ArrayList<Double> deltaWeightsValues) {
+        this.deltaWeightsValues = deltaWeightsValues;
+    }
+
+    private void setNewWeightsValues(ArrayList<Double> newWeightsValues) {
+        this.newWeightsValues = newWeightsValues;
+    }
+
+    private void setDeltaBias(double deltaBias) {
+        this.deltaBias = deltaBias;
+    }
+
+    private void setNewBias(double newBias) {
+        this.newBias = newBias;
+    }
+
+    @Override
+    public void setFunctionActivation(FunctionActivationData functionActivation) {
+        this.functionActivation = functionActivation;
+    }
+
     private void setEpoch(int epoch) {
         this.epoch = epoch;
     }
@@ -479,40 +523,20 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         this.trainingCount = trainingCount;
     }
 
-    public int getRound() {
-        return round;
-    }
-
     private void setRound(int round) {
         this.round = round;
-    }
-
-    public ArrayList<double[]> getInputsValuesReport() {
-        return inputsValuesReport;
     }
 
     private void setInputsValuesReport(ArrayList<double[]> inputsValuesReport) {
         this.inputsValuesReport = inputsValuesReport;
     }
 
-    public ArrayList<Double> getInitWeightsValuesReport() {
-        return initWeightsValuesReport;
-    }
-
     private void setInitWeightsValuesReport(ArrayList<Double> initWeightsValuesReport) {
         this.initWeightsValuesReport = initWeightsValuesReport;
     }
 
-    public int getSamplePosition() {
-        return samplePosition;
-    }
-
     private void setSamplePosition(int samplePosition) {
         this.samplePosition = samplePosition;
-    }
-
-    public double getFunctionActivationResult() {
-        return functionActivationResult;
     }
 
     private void setFunctionActivationResult(double functionActivationResult) {
@@ -531,32 +555,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         this.typeLayerNameOutput = typeLayerName;
     }
 
-    public String getStructureInputReport() {
-        return typeLayerNameInput + " " + (numberLayerInput) + " " + (numberNeuronInput);
-    }
-
-    public String getStructureOutputReport() {
-        return typeLayerNameOutput + " " + (numberLayerOutput) + " " + (numberNeuronOutput);
-    }
-
-    public ArrayList<Double> getListInputData() {
-        return listInputData;
-    }
-
     private void setListInputData(ArrayList<Double> listInputData) {
         this.listInputData = listInputData;
     }
 
-    public int getnTraining() {
-        return nTraining;
-    }
-
     private void setnTraining(int nTraining) {
         this.nTraining = nTraining;
-    }
-
-    public Map<Integer, Perceptron> getReportBackpropagation() {
-        return reportBackpropagation;
     }
 
 }
