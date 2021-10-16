@@ -8,20 +8,20 @@ public class PixelCalc {
     Integer Pixels_height = null;
     String aux = "";
 
-    public void defaultImage (){
+    public void defaultImage() {
         this.Pixels_width = 800;
         this.Pixels_height = 600;
     }
 
-    public void setPixelsWidth (int Pixels_width){
+    public void setPixels_width(int Pixels_width) {
         this.Pixels_width = Pixels_width;
     }
 
-    public void setPixelsHeight (int Pixels_height){
+    public void setPixels_height(int Pixels_height) {
         this.Pixels_height = Pixels_height;
     }
 
-    public void setRatio (int Ratio_width,int Ratio_height){
+    public void setRatio(int Ratio_width, int Ratio_height) {
         this.Ratio_width = Ratio_width;
         this.Ratio_height = Ratio_height;
     }
@@ -42,24 +42,22 @@ public class PixelCalc {
         return Pixels_height;
     }
 
-    public int proporcao() {
+    public int setProportion() {
         if (Pixels_height != 0) {
             Pixels_width = (Pixels_height / Ratio_height) * Ratio_width;
             return Pixels_width;
-        }
-        else if (Pixels_width == 0 && Pixels_height == 0){
+        } else if (Pixels_width == 0 && Pixels_height == 0) {
             Pixels_width = 800;
             Pixels_height = (Pixels_width / Ratio_width) * Ratio_height;
             return Pixels_height;
-        }
-        else{
+        } else {
             Pixels_height = (Pixels_width / Ratio_width) * Ratio_height;
             return Pixels_height;
         }
     }
 
-    public String Dados (){
-        if(Pixels_width == null && Pixels_height == null)
+    public String setDate() {
+        if (Pixels_width == null && Pixels_height == null)
             defaultImage();
         System.out.println("Ratio " + getRatio_width() + ":" + getRatio_height());
         System.out.println(aux = "Largura: " + Pixels_width + " Altura: " + Pixels_height);

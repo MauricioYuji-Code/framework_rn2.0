@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Perceptron extends NeuralNetwork implements Serializable {
-
     //Objetos
     private Layer input;
     private Layer output;
@@ -25,10 +24,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private ArrayList<Double> deltaW;
     private double deltaB;
     //Variáveis auxiliares
-    private int samplesCountAux = 1;
+    private int samplesCount = 1;
     private int epoch = 1;
     private int trainingCount = 0;
-    private int sampleCount = 0;
+    private int samplePositionList = 0; //samplePositionOf
+    private int round = 0;
+    private int nTraining = 0;
     //Feedfoward
     private ArrayList<double[]> inputsValuesReport;
     private ArrayList<Double> weightsInputValue;
@@ -57,9 +58,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     //Assistants for report
     private ArrayList<Perceptron> reportFeedfoward = new ArrayList<>();
     private Map<Integer, Perceptron> reportBackpropagation = new HashMap<>();
-    private int round = 0;
     private ArrayList<Double> listInputData;
-    private int nTraining = 0;
 
     public Perceptron() {
 
@@ -122,8 +121,6 @@ public class Perceptron extends NeuralNetwork implements Serializable {
             default:
                 System.exit(0);
         }
-
-
     }
 
     @Override
@@ -133,7 +130,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         this.listInputData = new ArrayList<>();
         System.out.println("Lista de amostras para o treinamento");
         for (int i = 0; i < input.getNeuronsCount(); i++) {
-            input.getNeurons().get(i).setInput(samples.get(sampleCount)[i]);
+            input.getNeurons().get(i).setInput(samples.get(samplePositionList)[i]);
             System.out.println(input.getNeurons().get(i).getNetInput());
             listInputData.add(i, input.getNeurons().get(i).getNetInput());
         }
@@ -158,7 +155,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public void checkNextSamples() {
         Helper.drawLine();
         System.out.println("Checagem das próximas amostras");
-        if (samplesCountAux != samples.size()) {
+        if (samplesCount != samples.size()) {
             trainWiththeNextSamples();
         } else {
             generateNewEpoch();
@@ -166,29 +163,28 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     }
 
     public void trainWiththeNextSamples() {
-        System.out.println("Proximas amostras encontradas");
         Helper.drawLine();
         System.out.println("Começando o treinamento!");
-        sampleCount++;
+        samplePositionList++;
         setInputValues(samples);
-        samplesCountAux++;
+        samplesCount++;
         training();
     }
 
     public void generateNewEpoch() {
         this.epoch++;
         if (trainingCount > 0) {
-            this.sampleCount = 0;
-            this.samplesCountAux = 0;
+            this.samplePositionList = 0;
+            this.samplesCount = 0;
             this.round = 0;
             setInputValues(samples);
         }
         while (trainingCount > 0) {
-            samplesCountAux++;
+            samplesCount++;
             this.trainingCount = 0;
             training();
         }
-        this.sampleCount = 0;
+        this.samplePositionList = 0;
     }
 
     public void start() {
@@ -222,6 +218,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
             activateCounters();
             defineStatus();
             reportBackpropagation();
+//            reportFeedfoward();
         }
         Helper.drawLine();
         System.out.println("Rede treinada!");
@@ -248,7 +245,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
             this.functionActivationResult = FunctionActivation.degrau(sum());
             this.sumValue = sum();
         } else if (getFunctionActivaion().name().equals("SIGMOID")) {
-            output.getNeurons().get(0).setOutput(FunctionActivation.sigmoid(sum()));
+            output.getNeurons().get(0).setOutput(FunctionActivation.sigmoid(sum())); //Feedfoward
             this.functionActivationResult = FunctionActivation.degrau(sum());
             this.sumValue = sum();
         }
@@ -290,7 +287,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pFeedfoward.setInputsValuesReport(samples);
         pFeedfoward.setInitWeightsValuesReport(initWeightsValues);
         pFeedfoward.setFunctionActivation(getFunctionActivaion());
-        pFeedfoward.setSamplePosition(sampleCount);
+        pFeedfoward.setSamplePosition(samplePositionList);
         pFeedfoward.setPredictStatus(predictStatus);
         pFeedfoward.setLearningRateValue(learningRate);
         pFeedfoward.setPredictValue(predict);
@@ -318,7 +315,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pBackPropagation.setInputsValuesReport(samples);
         pBackPropagation.setInitWeightsValuesReport(initWeightsValues);
         pBackPropagation.setFunctionActivation(getFunctionActivaion());
-        pBackPropagation.setSamplePosition(sampleCount);
+        pBackPropagation.setSamplePosition(samplePositionList);
         pBackPropagation.setPredictStatus(predictStatus);
         pBackPropagation.setFunctionActivationResult(functionActivationResult);
         pBackPropagation.setListInputData(listInputData);

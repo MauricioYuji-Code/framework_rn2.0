@@ -16,10 +16,10 @@ public class Main {
     public static void main(String[] args) {
         //Perceptron
         Helper.drawPerceptron();
-        NeuralNetwork nn = new Perceptron(0.01, 0, 0);
+        NeuralNetwork nn = new Perceptron(0.9, 0.8, 0);
         nn.setStructure(Type.INPUT, 1, 2);
         nn.setStructure(Type.OUTPUT, 1, 1);
-        nn.setFunctionActivation(FunctionActivationData.DEGRAU);
+        nn.setFunctionActivation(FunctionActivationData.SIGMOID);
         double sample1[] = {0, 1};
         double sample2[] = {1, 0};
 //        double sample3[] = {0, 0};
@@ -30,7 +30,7 @@ public class Main {
         nn.setInputValues(list);
         nn.connectNeuronIncludingWeigth(0);
         nn.training();
-//        nn.save("rede.rn");
+        nn.save("rede.rn");
 //        //Perceptron start
 //        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
 //        double data1[] = {1, 0};
@@ -137,10 +137,10 @@ public class Main {
 //        Report.report(nn.getReports(), "myReport");
 
         //Todo - gráfico
-//        PixelCalc pixelcalc = new PixelCalc();
-//        ImageU imageu = new ImageU(pixelcalc, nn.getReports());
-//        pixelcalc.Dados();
-//        imageu.criaImagem("Graph");
+        PixelCalc pixelcalc = new PixelCalc();
+        ImageU imageu = new ImageU(pixelcalc, nn.getReportFeedfoward());
+        pixelcalc.setDate();
+        imageu.showImage();
 
     }
 }
