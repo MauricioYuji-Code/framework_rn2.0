@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class NeuralNetwork implements Serializable {
 
@@ -331,7 +332,11 @@ public class NeuralNetwork implements Serializable {
         return null;
     }
 
-    public ArrayList<Perceptron> getReports() {
+    public ArrayList<Perceptron> getReportFeedfoward() {
+        return null;
+    }
+
+    public Map<Integer, Perceptron> getReportBackpropagation() {
         return null;
     }
 

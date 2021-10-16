@@ -61,26 +61,36 @@ public class Main {
 //        mlp.start();
 
         //Teste do report
-        System.out.println("Teste dos dados (Pesos (Input layer)): " + nn.getReports().get(0).getInitWeightsValuesReport().get(1));
-        System.out.println("Teste dos dados (Novo peso): " + nn.getReports().get(2).getNewWeightsValues().get(1));
-        System.out.println("Teste dos dados (Delta peso): " + nn.getReports().get(1).getDeltaWeightsValues().get(1));
+        System.out.println("Teste dos dados (Pesos (Input layer)): " + nn.getReportFeedfoward().get(0).getInitWeightsValuesReport().get(1));
+//        System.out.println("Teste dos dados (Novo peso): " + nn.getReportBackpropagation().get(0).getNewWeightsValues().get(1));
+//        System.out.println("Teste dos dados (Delta peso): " + nn.getReportBackpropagation().get(0).getDeltaWeightsValues().get(0));
         //Só usar o size como referencia
-        System.out.println("Teste dos dados (Resultado da função de ativação): " + nn.getReports().get(0).getFunctionActivationResult());
+        System.out.println("Teste dos dados (Resultado da função de ativação): " + nn.getReportFeedfoward().get(0).getFunctionActivationResult());
         //pode só usar o 0
-        System.out.println("Teste dos dados (Structure:): " + nn.getReports().get(0).getStructureInputReport());
-        System.out.println("Teste dos dados (Structure:): " + nn.getReports().get(0).getStructureOutputReport());
-        System.out.println("Teste dos dados (Training numbers:): " + nn.getReports().get(1).getnTraining());
-        System.out.println("Teste dos dados (Input Layer:): " + nn.getReports().get(0).getInputReport().get(0));
+        System.out.println("Teste dos dados (Structure:): " + nn.getReportFeedfoward().get(0).getStructureInputReport());
+        System.out.println("Teste dos dados (Structure:): " + nn.getReportFeedfoward().get(0).getStructureOutputReport());
+        System.out.println("Teste dos dados (Training numbers:): " + nn.getReportFeedfoward().get(nn.getReportFeedfoward().size() - 1).getnTraining());
+        System.out.println("Teste dos dados (Input Layer:): " + nn.getReportFeedfoward().get(1).getListInputData().get(0));
+//        System.out.println("Teste dos dados (:): " + nn.getReportBackpropagation().get(0).getNewWeightsValues().get(0));
+
+
+//        for (int i = 0; i < nn.getReports().size(); i++) {
+//            if (!nn.getReports().get(i).getPredictStatus()) {
+//                System.out.println("Teste dos dados (:): " + nn.getReportsBackpropagation().get(i).getNewWeightsValues().get(0));
+//            }
+//            System.out.println("passou por aqui");
+//        }
 
 
         //Input Layer:
-        int aux = 0;
-        while (aux != nn.getReports().size()) {
-            for (int i = 0; i < nn.getReports().get(0).getInputReport().size(); i++) {
-                System.out.println("(Input Layer): " + nn.getReports().get(aux).getInputReport().get(i));
-            }
-            aux++;
-        }
+//        int aux = 0;
+//        while (aux != nn.getReports().size()) {
+//            for (int i = 0; i < nn.getReports().get(0).getInputReport().size(); i++) {
+//                System.out.println("(Input Layer): " + nn.getReports().get(aux).getInputReport().get(i));
+//            }
+//            aux++;
+//        }
+//        System.out.println(aux);
         //Pesos (Input layer)
 //        int aux = 0;
 //        while (aux != nn.getReports().size()) {
@@ -91,10 +101,10 @@ public class Main {
 //        }
 
         //Novo peso
-//        int aux = 1;
-//        while (aux != nn.getReports().size()) {
-//            for (int i = 0; i < nn.getReports().get(1).getNewWeightsValues().size(); i++) {
-//                System.out.println("(Peso novo): " + nn.getReports().get(aux).getNewWeightsValues().get(i));
+//        int aux = 0;
+//        while (aux != nn.getReportsBackpropagation().size()) {
+//            for (int i = 0; i < nn.getReportsBackpropagation().get(0).getNewWeightsValues().size(); i++) {
+//                System.out.println("(Peso novo): " + nn.getReportsBackpropagation().get(aux).getNewWeightsValues().get(i));
 //            }
 //            aux ++;
 //        }

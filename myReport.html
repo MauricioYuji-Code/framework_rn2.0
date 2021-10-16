@@ -20,14 +20,14 @@
         <strong>Training Data:</strong>
         <ul>
           <!-- Criar estrutura diferente para os pesos e as amostras, pois são arrays e a forma e exibir os dados é diferente -->
-          <li><span>Samples: </span></li>
-          <li><span>Weights: </span></li>
-          <li><span>Learning Rate: </span></li>
-          <li><span>Predict: </span></li>
-          <li><span>Bias: </span></li>
+          <li><div><span>Samples:<ul class='sample-list'><li>1.0 0.0 </li><li>0.0 1.0 </li></ul></span></div></li>
+          <li><span>Weights:0.0</span></li>
+          <li><span>Learning Rate: 0.01</span></li>
+          <li><span>Predict: 0.0</span></li>
+          <li><span>Bias: 0.0</span></li>
           <li><span>Structure: </span></li>
-          <li><span>Network Type: </span></li>
-          <li><span>Activation Function: </span></li>
+          <li><span>Network Type: Perceptron</span></li>
+          <li><span>Activation Function: DEGRAU</span></li>
         </ul>
       </div>
 
@@ -94,6 +94,7 @@
 
     .nn-data {
       display: flex;
+      flex-direction: column;
       width: 100%;
     }
 
@@ -129,8 +130,8 @@
       margin-bottom: 15px;
     }
 
-    .nn-initial-info ul,
-    .training-execution-data ul {
+    .nn-initial-info > ul,
+    .training-execution-data > ul {
       display: flex;
       flex-direction: column;
       width: 100%;
