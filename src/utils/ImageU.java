@@ -311,7 +311,6 @@ public class ImageU {
 
     public void showImage() {
         valuesSaida();
-
         background();
         whiteBackground();
         setGrid();
