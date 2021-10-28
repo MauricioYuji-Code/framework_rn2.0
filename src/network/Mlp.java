@@ -22,6 +22,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
     private ArrayList<Double> deltaOW;
     private ArrayList<Double> deltaHW;
     private FunctionActivationData functionActivation;
+    private ArrayList<Double> outputs = new ArrayList<>();
 
 
     public Mlp(double learningRate, double predict, double bias) {
@@ -192,6 +193,8 @@ public class Mlp extends NeuralNetwork implements Serializable {
     public boolean checkOutputs() {
         int s = 0;
         for (int i = 0; i < output.getNeuronsCount(); i++) {
+            outputs.add(output.getNeurons().get(i).getOutput());
+            System.out.println("Saída armazenada: " + outputs.get(i));
             if (output.getNeurons().get(i).getOutput() == predict) {
                 System.out.println("O neuronio de posição de saída" + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (SUCESSO)");
                 s++;
@@ -283,6 +286,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
 //        return Math.floor((deltaW + w) * 1000) / 1000;
         return deltaW + w;
     }
+
     //Todo realizar as epochs
     //Todo solução para duas saídas
     /*GETTERS E SETTERS*/
@@ -294,4 +298,14 @@ public class Mlp extends NeuralNetwork implements Serializable {
     public void setFunctionActivation(FunctionActivationData functionActivation) {
         this.functionActivation = functionActivation;
     }
+
+
+    public ArrayList<Double> getOutputs() {
+        return outputs;
+    }
+
+    public void setOutputs(ArrayList<Double> outputs) {
+        this.outputs = outputs;
+    }
+
 }

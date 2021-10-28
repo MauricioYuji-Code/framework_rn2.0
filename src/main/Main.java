@@ -52,7 +52,7 @@ public class Main {
         nn2.setStructure(Type.INPUT, 1, 784);
         nn2.setStructure(Type.HIDDEN, 1, 10);
         nn2.setStructure(Type.OUTPUT, 1, 10);
-        nn2.connectNeuronIncludingWeigth(1);
+        nn2.connectNeuronIncludingWeigth(0);
         nn2.setFunctionActivation(FunctionActivationData.SIGMOID);
         ArrayList<double[]> samples = new ArrayList<>();
         samples.add(0, mnistDataConverted);
