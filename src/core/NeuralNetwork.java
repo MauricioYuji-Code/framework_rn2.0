@@ -268,6 +268,9 @@ public class NeuralNetwork implements Serializable {
     public void connectNeuronIncludingWeigth(double weigthValue) {
     }
 
+    public void connectNeuronIncludingRandomWeigth() {
+    }
+
     public void save(String filePath) {
 
         ObjectOutputStream oos = null;
@@ -344,7 +347,7 @@ public class NeuralNetwork implements Serializable {
 
     }
 
-    public void report(ArrayList<Perceptron> reports){
+    public void report(ArrayList<Perceptron> reports) {
 
     }
 

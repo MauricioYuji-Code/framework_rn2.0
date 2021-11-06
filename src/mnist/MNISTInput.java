@@ -19,7 +19,7 @@ public class MNISTInput implements Input {
         double[] result = new double[in.size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = in.get(i).doubleValue() / (double) (max - min);
-            System.out.println(result[i]);
+//            System.out.println(result[i]);
         }
 
         return result;

@@ -48,11 +48,12 @@ public class Main {
         double[] mnistDataConverted = mnistInput.getInput(mnistDataUnconverted, 255, 0);
 
         //MLP treinamento
-        NeuralNetwork nn2 = new Mlp(10, 0.99, 0);
+        NeuralNetwork nn2 = new Mlp(0.9, 5, 0);
         nn2.setStructure(Type.INPUT, 1, 784);
         nn2.setStructure(Type.HIDDEN, 1, 10);
         nn2.setStructure(Type.OUTPUT, 1, 10);
-        nn2.connectNeuronIncludingWeigth(0);
+//        nn2.connectNeuronIncludingWeigth(0);
+        nn2.connectNeuronIncludingRandomWeigth();
         nn2.setFunctionActivation(FunctionActivationData.SIGMOID);
         ArrayList<double[]> samples = new ArrayList<>();
         samples.add(0, mnistDataConverted);
