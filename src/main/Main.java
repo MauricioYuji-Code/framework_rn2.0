@@ -3,6 +3,7 @@ package main;
 import core.*;
 import mnist.MNISTInput;
 import mnist.Mnist;
+import mnist.MnistData;
 import network.Mlp;
 import network.Perceptron;
 import network.FunctionActivationData;
@@ -47,6 +48,10 @@ public class Main {
         MNISTInput mnistInput = new MNISTInput();
         double[] mnistDataConverted = mnistInput.getInput(mnistDataUnconverted, 255, 0);
 
+
+//        MnistData[] mnistData = new Mnist().readData("data/train-images.idx3-ubyte", "data/train-labels.idx1-ubyte");
+//        double[] mnistDataConverted = mnistInput.getInput(mnistData[1], 255, 0);
+
         //MLP treinamento
         NeuralNetwork nn2 = new Mlp(0.9, 5, 0);
         nn2.setStructure(Type.INPUT, 1, 784);
@@ -57,6 +62,7 @@ public class Main {
         nn2.setFunctionActivation(FunctionActivationData.SIGMOID);
         ArrayList<double[]> samples = new ArrayList<>();
         samples.add(0, mnistDataConverted);
+        samples.add(1, mnistDataConverted);
         nn2.setInputValues(samples);
         nn2.training();
 //        nn2.save("rede-mlp.rn");

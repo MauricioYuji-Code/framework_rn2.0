@@ -1,5 +1,6 @@
 package network;
 
+import Help.Helper;
 import core.Layer;
 import core.NeuralNetwork;
 import core.Neuron;
@@ -26,11 +27,19 @@ public class Mlp extends NeuralNetwork implements Serializable {
     private ArrayList<Double> deltaHW;
     private FunctionActivationData functionActivation;
     private ArrayList<Double> outputs = new ArrayList<>();
+    private ArrayList<double[]> samples;
     //teste
     private double target = 1;
     private double noTarget = 0;
     private ArrayList<Double> bias_h = new ArrayList<>();
     private ArrayList<Double> bias_o = new ArrayList<>();
+    //Variáveis auxiliares
+    private int samplesCount = 1;
+    private int epoch = 1;
+    private int trainingCount = 0;
+    private int samplePositionList = 0; //samplePositionOf
+    private int round = 0;
+    private int nTraining = 0;
 
 
     public Mlp(double learningRate, double predict, double bias) {
@@ -93,10 +102,10 @@ public class Mlp extends NeuralNetwork implements Serializable {
 
     @Override
     public void setInputValues(ArrayList inputValues) {
-        ArrayList<double[]> samples = inputValues;
+        samples = inputValues;
         System.out.println("Valores da camada de entrada: ");
         for (int i = 0; i < input.getNeuronsCount(); i++) {
-            input.getNeurons().get(i).setInput(samples.get(0)[i]); //Exemplo apenas da primeira amostra
+            input.getNeurons().get(i).setInput(samples.get(samplePositionList)[i]); //Exemplo apenas da primeira amostra
 //            System.out.println(input.getNeurons().get(i).getNetInput());
         }
 
@@ -282,12 +291,44 @@ public class Mlp extends NeuralNetwork implements Serializable {
         }
         outputs.clear();
 //        System.out.println("A lista está vazia?" + outputs.isEmpty());
+
+        System.out.println("Checagem das próximas amostras");
+        if (samplesCount != samples.size()) {
+            trainWiththeNextSamples();
+        } else {
+            generateNewEpoch();
+        }
+
         if (s > 0) {
             return true;
         } else {
             return false;
         }
-//        return true;
+    }
+
+    public void trainWiththeNextSamples() {
+        Helper.drawLine();
+        System.out.println("Começando o treinamento!");
+        samplePositionList++;
+        setInputValues(samples);
+        samplesCount++;
+        training();
+    }
+
+    public void generateNewEpoch() {
+        this.epoch++;
+        if (trainingCount > 0) {
+            this.samplePositionList = 0;
+            this.samplesCount = 0;
+            this.round = 0;
+            setInputValues(samples);
+        }
+        while (trainingCount > 0) {
+            samplesCount++;
+            this.trainingCount = 0;
+            training();
+        }
+        this.samplePositionList = 0;
     }
 
 //    public void backpropagation() {
