@@ -44,16 +44,18 @@ public class Main {
 //        perceptron.start();
 
         //Data set MNIST
-        ArrayList<Number> mnistDataUnconverted = Mnist.generateDataMNIST();
+//        ArrayList<Number> mnistDataUnconverted = Mnist.generateDataMNIST();
+//        MNISTInput mnistInput = new MNISTInput();
+//        double[] mnistDataConverted = mnistInput.getInput(mnistDataUnconverted, 255, 0);
+
         MNISTInput mnistInput = new MNISTInput();
-        double[] mnistDataConverted = mnistInput.getInput(mnistDataUnconverted, 255, 0);
-
-
-//        MnistData[] mnistData = new Mnist().readData("data/train-images.idx3-ubyte", "data/train-labels.idx1-ubyte");
-//        double[] mnistDataConverted = mnistInput.getInput(mnistData[1], 255, 0);
-
+        MnistData[] mnistData = new Mnist().readData("data/train-images.idx3-ubyte", "data/train-labels.idx1-ubyte");
+        double[] mnistDataConverted = mnistInput.getInputArray(mnistData[2], 255, 0);
+        System.out.println(mnistData[0].getLabel());
+        ArrayList <double[]> mnistSamples = new ArrayList<>();
+        ArrayList <Double> mnistPredicts = new ArrayList<>();
         //MLP treinamento
-        NeuralNetwork nn2 = new Mlp(0.9, 5, 0);
+        NeuralNetwork nn2 = new Mlp(0.9, mnistData[2].getLabel(), 0);
         nn2.setStructure(Type.INPUT, 1, 784);
         nn2.setStructure(Type.HIDDEN, 1, 10);
         nn2.setStructure(Type.OUTPUT, 1, 10);
@@ -62,7 +64,6 @@ public class Main {
         nn2.setFunctionActivation(FunctionActivationData.SIGMOID);
         ArrayList<double[]> samples = new ArrayList<>();
         samples.add(0, mnistDataConverted);
-        samples.add(1, mnistDataConverted);
         nn2.setInputValues(samples);
         nn2.training();
 //        nn2.save("rede-mlp.rn");
