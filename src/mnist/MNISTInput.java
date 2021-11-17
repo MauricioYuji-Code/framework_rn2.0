@@ -29,7 +29,17 @@ public class MNISTInput implements Input {
         double[] result = new double[in.getSizeOfArray()];
         for (int i = 0; i < result.length; i++) {
             result[i] = in.getValueOfArray(i) / (double) (max - min);
-            System.out.println(result[i]);
+//            System.out.println(result[i]);
+        }
+
+        return result;
+    }
+
+    public double[] getInputArray(MnistData in) {
+        double[] result = new double[in.getSizeOfArray()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = in.getValueOfArray(i);
+//            System.out.println(result[i]);
         }
 
         return result;

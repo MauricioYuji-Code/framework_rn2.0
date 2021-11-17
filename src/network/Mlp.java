@@ -38,14 +38,22 @@ public class Mlp extends NeuralNetwork implements Serializable {
     private int epoch = 1;
     private int trainingCount = 0;
     private int samplePositionList = 0; //samplePositionOf
+    private int predictPositionList = 0;
     private int round = 0;
     private int nTraining = 0;
+    //Teste
+    private ArrayList<Double> predicts = new ArrayList<>();
 
 
     public Mlp(double learningRate, double predict, double bias) {
         this.learningRate = learningRate;
         this.predict = predict;
         this.bias = bias;
+    }
+
+    public Mlp(double learningRate, ArrayList<Double> predicts) {
+        this.learningRate = learningRate;
+        this.predicts = predicts;
     }
 
     @Override
@@ -103,12 +111,22 @@ public class Mlp extends NeuralNetwork implements Serializable {
     @Override
     public void setInputValues(ArrayList inputValues) {
         samples = inputValues;
-        System.out.println("Valores da camada de entrada: ");
+//        System.out.println("Valores da camada de entrada: ");
+//        System.out.println("Qual é a lista da amostra: " + samplePositionList);
         for (int i = 0; i < input.getNeuronsCount(); i++) {
-            input.getNeurons().get(i).setInput(samples.get(samplePositionList)[i]); //Exemplo apenas da primeira amostra
-//            System.out.println(input.getNeurons().get(i).getNetInput());
+            input.getNeurons().get(i).setInput(samples.get(samplePositionList)[i]);
+//            System.out.print(input.getNeurons().get(i).getNetInput());
+//            if (i % 28 == 0)
+//                System.out.println();
         }
+//        System.out.println("Posicao atual do inputvalues: " + samplePositionList);
 
+    }
+
+    public double getPredictValue(ArrayList predicts) {
+//        System.out.println("Valor do samplesPosition " + predictPositionList);
+//        System.out.println("Posicao atual do predicts: " + predictPositionList);
+        return (double) predicts.get(predictPositionList);
     }
 
     public void setData(double[] data) {
@@ -176,30 +194,43 @@ public class Mlp extends NeuralNetwork implements Serializable {
 
     @Override
     public void training() {
-        System.out.println("Start MLP!!!");
-        System.out.println("Start sum...");
+//        System.out.println("Start MLP!!!");
+//        System.out.println("Start sum...");
         sum();
-        System.out.println("Start check outputs...");
+//        System.out.println("Start check outputs...");
         while (!checkOutputsMNIST()) {
-            System.out.println("A rede precisa de treinamento, resultado não corresponde com o esperado");
-            System.out.println("iniciando treinamento...");
+//            System.out.println("A rede precisa de treinamento, resultado não corresponde com o esperado");
+//            System.out.println("iniciando treinamento...");
             backpropagationTest();
+            activateCounters();
             sum();
         }
-        System.out.println("Rede treinada!");
+//        System.out.println("Rede treinada!");
+        checkNextSamples();
+    }
 
+    public void checkNextSamples() {
+//        Helper.drawLine();
+//        System.out.println("Checagem das próximas amostras");
+        if (samplesCount != samples.size()) {
+            trainWiththeNextSamples();
+        } else {
+            generateNewEpoch();
+        }
     }
 
     @Override
     public void start() {
-        System.out.println("Start MLP!!!");
+//        System.out.println("Start MLP!!!");
         sum();
-        for (int i = 0; i < output.getNeuronsCount(); i++) {
-            if (checkOutputs()) {
-                System.out.println("O neuronio de posição " + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (SUCESSO)");
-            } else {
-                System.out.println("O neuronio de posição " + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (FALHA)");
-            }
+//        for (int i = 0; i < output.getNeuronsCount(); i++) {
+        if (checkOutputsMNIST()) {
+//                System.out.println("O neuronio de posição " + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (SUCESSO)");
+            System.out.println("Sucesso");
+        } else {
+//                System.out.println("O neuronio de posição " + i + " retornou: " + output.getNeurons().get(i).getOutput() + " e o valor esperado é: " + predict + " (FALHA)");
+            System.out.println("Falha");
+//            }
         }
     }
 
@@ -253,6 +284,8 @@ public class Mlp extends NeuralNetwork implements Serializable {
         if (getFunctionActivation().name().equals("DEGRAU")) {
             output.getNeurons().get(auxOutput).setOutput(FunctionActivation.degrau(aux));
         } else if (getFunctionActivation().name().equals("SIGMOID")) {
+            //Math.round(media * 100.0)/100.0
+//            output.getNeurons().get(auxOutput).setOutput(Math.floor(FunctionActivation.sigmoid(aux)*10000)/10000);
             output.getNeurons().get(auxOutput).setOutput(FunctionActivation.sigmoid(aux));
 //            System.out.println("Valor do output dps da funcao de ativacao" + output.getNeurons().get(auxOutput).getNetInput());
         }
@@ -277,39 +310,33 @@ public class Mlp extends NeuralNetwork implements Serializable {
     }
 
     public boolean checkOutputsMNIST() {
-        int s = 0;
+//        int s = 0;
+        this.predictPositionList = samplePositionList;
         for (int i = 0; i < output.getNeuronsCount(); i++) {
             outputs.add(output.getNeurons().get(i).getOutput());
             System.out.println("Posição da lista: " + i + " Saída armazenada: " + outputs.get(i));
         }
-        System.out.println("max da lista: " + Collections.max(outputs) + " position: " + outputs.indexOf(Collections.max(outputs)));
-        if (outputs.indexOf(Collections.max(outputs)) == predict) {
-            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + predict + " (SUCESSO)");
-            s++;
-        } else {
-            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + predict + " (FALHA)");
-        }
-        outputs.clear();
-//        System.out.println("A lista está vazia?" + outputs.isEmpty());
-
-        System.out.println("Checagem das próximas amostras");
-        if (samplesCount != samples.size()) {
-            trainWiththeNextSamples();
-        } else {
-            generateNewEpoch();
-        }
-
-        if (s > 0) {
+//        System.out.println("max da lista: " + Collections.max(outputs) + " position: " + outputs.indexOf(Collections.max(outputs)));
+        if (outputs.indexOf(Collections.max(outputs)) == getPredictValue(predicts)) {
+//            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + predict + " (SUCESSO)");
+            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + getPredictValue(predicts) + " (SUCESSO)");
+//            s++;
+            outputs.clear();
             return true;
         } else {
+//            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + predict + " (FALHA)");
+            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + getPredictValue(predicts) + " (FALHA)");
+            outputs.clear();
             return false;
         }
+
     }
 
     public void trainWiththeNextSamples() {
-        Helper.drawLine();
-        System.out.println("Começando o treinamento!");
+//        Helper.drawLine();
+//        System.out.println("Começando o treinamento!");
         samplePositionList++;
+//        System.out.println("Posição da lista de amostras e de predicts: " + samplePositionList);
         setInputValues(samples);
         samplesCount++;
         training();
@@ -321,6 +348,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
             this.samplePositionList = 0;
             this.samplesCount = 0;
             this.round = 0;
+            this.predictPositionList = 0;
             setInputValues(samples);
         }
         while (trainingCount > 0) {
@@ -329,6 +357,12 @@ public class Mlp extends NeuralNetwork implements Serializable {
             training();
         }
         this.samplePositionList = 0;
+    }
+
+    public void activateCounters() {
+        trainingCount++;
+        nTraining++;
+        round++;
     }
 
 //    public void backpropagation() {
@@ -393,9 +427,9 @@ public class Mlp extends NeuralNetwork implements Serializable {
 //    }
 
     public void backpropagationTest() {
-        this.deltaB = deltaBiasCalc(error, learningRate);
+//        this.deltaB = deltaBiasCalc(error, learningRate);
 //        System.out.println("Delta bias..." + deltaB);
-        this.bias = newBiasCalc(bias, deltaB);
+//        this.bias = newBiasCalc(bias, deltaB);
 //        System.out.println("Valor do novo bias..." + bias);
 
         //Oculta para a saída
@@ -404,7 +438,10 @@ public class Mlp extends NeuralNetwork implements Serializable {
          */
         ArrayList<Double> errorListO = new ArrayList<>();
         for (int i = 0; i < output.getNeuronsCount(); i++) {
-            if (i == predict) {
+//            if (i == predict) {
+//                errorListO.add(target - output.getNeurons().get(i).getOutput());
+//            }
+            if (i == getPredictValue(predicts)) {
                 errorListO.add(target - output.getNeurons().get(i).getOutput());
             }
             errorListO.add(noTarget - output.getNeurons().get(i).getOutput());
@@ -414,14 +451,14 @@ public class Mlp extends NeuralNetwork implements Serializable {
          */
         ArrayList<Double> errorListD_O = new ArrayList<>();
         for (int i = 0; i < output.getNeuronsCount(); i++) {
-            errorListD_O.add(FunctionActivation.sigmoidDer(output.getNeurons().get(i).getOutput()));
+            errorListD_O.add(i, FunctionActivation.sigmoidDer(output.getNeurons().get(i).getOutput()));
         }
         /*
         Gradiente - multiplicação da errorListD com errorList e formar um arraylist gradiente (E o d(S))
          */
         ArrayList<Double> gradiente_O = new ArrayList<>();
         for (int i = 0; i < output.getNeuronsCount(); i++) {
-            gradiente_O.add(errorListO.get(i) * errorListD_O.get(i));
+            gradiente_O.add(i, errorListO.get(i) * errorListD_O.get(i));
         }
 
         /*
@@ -429,7 +466,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
          */
         ArrayList<Double> gradiente_lr_O = new ArrayList<>();
         for (int i = 0; i < output.getNeuronsCount(); i++) {
-            gradiente_lr_O.add(gradiente_O.get(i) * this.learningRate);
+            gradiente_lr_O.add(i, gradiente_O.get(i) * this.learningRate);
         }
 
         /*
@@ -467,6 +504,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
         Formação do arraylist do calculo de cada erro
          */
         ArrayList<Double> errorListH = new ArrayList<>();
+//        System.out.println("errorListH está vazio?: " + errorListH.isEmpty());
         auxConnectionsHidden = 0;
         double valueHiddenError = 0;
         while (auxConnectionsHidden < hidden.getNeuronsCount()) {
@@ -474,7 +512,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
                 valueHiddenError += hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().getValue() * errorListO.get(i);
             }
 //            System.out.println("Valor do valueHiddenError: " + valueHiddenError);
-            errorListH.add(valueHiddenError);
+            errorListH.add(auxConnectionsHidden, valueHiddenError);
             auxConnectionsHidden++;
         }
 
@@ -483,21 +521,21 @@ public class Mlp extends NeuralNetwork implements Serializable {
          */
         ArrayList<Double> errorListHiddenD = new ArrayList<>();
         for (int i = 0; i < hidden.getNeuronsCount(); i++) {
-            errorListHiddenD.add(FunctionActivation.sigmoidDer(errorListH.get(i)));
+            errorListHiddenD.add(i, FunctionActivation.sigmoidDer(errorListH.get(i)));
         }
         /*
         Gradiente - multiplicação da errorListD com errorList e formar um arraylist gradiente
          */
         ArrayList<Double> gradiente_H = new ArrayList<>();
         for (int i = 0; i < hidden.getNeuronsCount(); i++) {
-            gradiente_H.add(errorListH.get(i) * errorListHiddenD.get(i));
+            gradiente_H.add(i, errorListH.get(i) * errorListHiddenD.get(i));
         }
 //        /*
 //        formção do arraylist gradiente * learning rage
 //         */
         ArrayList<Double> gradiente_lr_H = new ArrayList<>();
         for (int i = 0; i < hidden.getNeuronsCount(); i++) {
-            gradiente_lr_H.add(gradiente_H.get(i) * this.learningRate);
+            gradiente_lr_H.add(i, gradiente_H.get(i) * this.learningRate);
         }
 
                /*
@@ -528,6 +566,16 @@ public class Mlp extends NeuralNetwork implements Serializable {
             auxConnectionsInput++;
         }
 
+        errorListO.clear();
+        errorListD_O.clear();
+        gradiente_O.clear();
+        gradiente_lr_O.clear();
+        deltaOW.clear();
+        errorListH.clear();
+        errorListHiddenD.clear();
+        gradiente_H.clear();
+        gradiente_lr_H.clear();
+        deltaHW.clear();
     }
 
     public double errorCalc(double t, double s) {
@@ -580,6 +628,14 @@ public class Mlp extends NeuralNetwork implements Serializable {
 
     public void setOutputs(ArrayList<Double> outputs) {
         this.outputs = outputs;
+    }
+
+    public double getPredict() {
+        return predict;
+    }
+
+    private void setPredict(double predict) {
+        this.predict = predict;
     }
 
 }
