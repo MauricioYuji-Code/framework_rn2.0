@@ -59,6 +59,9 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     private ArrayList<Perceptron> reportFeedfoward = new ArrayList<>();
     private Map<Integer, Perceptron> reportBackpropagation = new HashMap<>();
     private ArrayList<Double> listInputData;
+    //teste
+    private ArrayList<Double> predicts = new ArrayList<>();
+    private int predictPositionList = 0;
 
     public Perceptron() {
 
@@ -67,6 +70,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     public Perceptron(double learningRate, double predict, double bias) {
         this.learningRate = learningRate;
         this.predict = predict;
+        this.bias = bias;
+    }
+
+    public Perceptron(double learningRate, ArrayList<Double> predicts, double bias) {
+        this.learningRate = learningRate;
+        this.predicts = predicts;
         this.bias = bias;
     }
 
@@ -191,15 +200,16 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         System.out.println("Start Perceptron!!");
         selectFunctionActivation();
         Helper.drawLine();
-        if (output.getNeurons().get(0).getOutput() == predict) {
-            Helper.drawLine();
-            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() + "Valor da predição: " + predict);
-            System.out.println("Valores conferem");
-        } else {
-            Helper.drawLine();
-            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() + "Valor da predição: " + predict);
-            System.out.println("Valores não conferem");
-        }
+        System.out.println("A rede retornou o valor: " + output.getNeurons().get(0).getOutput());
+//        if (output.getNeurons().get(0).getOutput() == predict) {
+//            Helper.drawLine();
+//            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() + "Valor da predição: " + predict);
+//            System.out.println("Valores conferem");
+//        } else {
+//            Helper.drawLine();
+//            System.out.println("Valor da saída: " + output.getNeurons().get(0).getOutput() + "Valor da predição: " + predict);
+//            System.out.println("Valores não conferem");
+//        }
 
     }
 
@@ -209,7 +219,9 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         selectFunctionActivation();
         reportFeedfoward();
         round++;
-        while (output.getNeurons().get(0).getOutput() != predict) {
+        predictPositionList = samplePositionList;
+        while (output.getNeurons().get(0).getOutput() != getPredictValue(predicts)) {
+//        while (output.getNeurons().get(0).getOutput() != predict) {
             Helper.drawLine();
             predictStatus = false;
             System.out.println("A rede precisa de treinamento, resultado não corresponde com o esperado");
@@ -261,7 +273,7 @@ public class Perceptron extends NeuralNetwork implements Serializable {
     }
 
     public void backPropagation() {
-        this.error = errorCalc(predict, output.getNeurons().get(0).getOutput());
+        this.error = errorCalc(getPredictValue(predicts), output.getNeurons().get(0).getOutput());
         this.deltaW = new ArrayList<>();
         for (int i = 0; i < input.getNeuronsCount(); i++) {
             deltaW.add(i, deltaWeigthCalc(error, learningRate, input.getNeurons().get(i).getNetInput()));
@@ -321,6 +333,12 @@ public class Perceptron extends NeuralNetwork implements Serializable {
         pBackPropagation.setListInputData(listInputData);
         pBackPropagation.setnTraining(nTraining);
         reportBackpropagation.put((reportFeedfoward.size() - 1), pBackPropagation);
+    }
+
+    public double getPredictValue(ArrayList predicts) {
+//        System.out.println("Valor do samplesPosition " + predictPositionList);
+//        System.out.println("Posicao atual do predicts: " + predictPositionList);
+        return (double) predicts.get(predictPositionList);
     }
 
     /*************************GETTERS*************************/

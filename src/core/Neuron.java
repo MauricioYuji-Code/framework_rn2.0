@@ -87,14 +87,6 @@ public class Neuron implements Serializable, Cloneable {
         return (inputConnections.size() > 0);
     }
 
-
-    /**
-     * Verifique a conexão com o neurônio
-     *
-     * @param neuron conexão do Neuron a ser verificada
-     * @return true se houver conexão de saída, false caso contrário
-     */
-
     public boolean hasOutputConnectionTo(Neuron toNeuron) {
         for (Connection connection : outConnections) {
             if (connection.getToNeuron() == toNeuron) {
@@ -130,12 +122,12 @@ public class Neuron implements Serializable, Cloneable {
     public void addInputConnection(Connection connection) {
         // check whether connection is  null
         if (connection == null) {
-            throw new IllegalArgumentException("Attempt to add null connection to neuron!");
+            System.out.println("Attempt to add null connection to neuron!");
         }
 
         // make sure that connection instance is pointing to this neuron
         if (connection.getToNeuron() != this) {
-            throw new IllegalArgumentException("Cannot add input connection - bad toNeuron specified!");
+            System.out.println("Cannot add input connection - bad toNeuron specified!");
         }
 
         // if it already has connection from same neuron do nothing
@@ -147,17 +139,6 @@ public class Neuron implements Serializable, Cloneable {
 
         Neuron fromNeuron = connection.getFromNeuron();
         fromNeuron.addOutputConnection(connection);
-    }
-
-    /**
-     * Adiciona conexão de entrada do neurônio especificado.
-     *
-     * @param fromNeuron neuron para conectar a partir do neuron selecionado
-     */
-
-    public void addInputConnection(Neuron fromNeuron) {
-        Connection connection = new Connection(fromNeuron, this);
-        this.addInputConnection(connection);
     }
 
     /**
@@ -200,26 +181,6 @@ public class Neuron implements Serializable, Cloneable {
         this.outConnections.add(connection);
     }
 
-
-    /**
-     * Define a referência à camada pai para este neurônio (camada na qual o neurônio
-     * está localizado)
-     *
-     * @param referência pai na camada em que a célula está localizada
-     */
-    public void setParentLayer(Layer parent) {
-        this.parentLayer = parent;
-    }
-
-    /**
-     * Retorna a referência à camada pai para este neurônio
-     *
-     * @return camada pai para este neurônio
-     */
-    public Layer getParentLayer() {
-        return this.parentLayer;
-    }
-
     /**
      * Retorna o vetor de pesos das conexões de entrada
      *
@@ -233,28 +194,6 @@ public class Neuron implements Serializable, Cloneable {
         return weights;
     }
 
-
-    /**
-     * Retorna delta (erro) para este neurônio. Isso é usado por retropropagação
-     * regras de aprendizagem.
-     *
-     * @return erro para este neurônio que é definido pela regra de aprendizagem
-     */
-    public double getDelta() {
-        return delta;
-    }
-
-
-    /**
-     * Define delta para este neurônio. Isso é usado pelo aprendizado de retropropagação
-     * as regras.
-     *
-     * @param delta neuron delta
-     */
-    public void setDelta(double delta) {
-        this.delta = delta;
-    }
-
     /**
      * Sets this neuron output
      *
@@ -262,18 +201,6 @@ public class Neuron implements Serializable, Cloneable {
      */
     public void setOutput(double output) {
         this.output = output;
-    }
-
-
-    /**
-     * Define esta saída de neurônio
-     * <p>
-     * valor de saída @param para definir
-     */
-    public void initializeWeights(double value) {
-        for (Connection connection : this.inputConnections) {
-            connection.getWeight().setValue(value);
-        }
     }
 
     /**

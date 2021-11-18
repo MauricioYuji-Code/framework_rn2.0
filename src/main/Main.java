@@ -20,27 +20,34 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //Perceptron
-//        Helper.drawPerceptron();
-        NeuralNetwork nn = new Perceptron(0.9, 0.8, 0);
-        nn.setStructure(Type.INPUT, 1, 2);
-        nn.setStructure(Type.OUTPUT, 1, 1);
-        nn.setFunctionActivation(FunctionActivationData.SIGMOID);
         double sample1[] = {0, 1};
         double sample2[] = {1, 0};
         double sample3[] = {0, 0};
+        double sample4[] = {1, 1};
         ArrayList<double[]> list = new ArrayList<>();
         list.add(0, sample1);
-        list.add(1, sample2);
-        list.add(2, sample3);
+//        list.add(1, sample2);
+//        list.add(2, sample3);
+//        list.add(3, sample4);
+        ArrayList<Double> listPredicts = new ArrayList<>();
+        listPredicts.add(1.0);
+//        listPredicts.add(1.0);
+//        listPredicts.add(0.0);
+//        listPredicts.add(1.0);
+
+//        NeuralNetwork nn = new Perceptron(0.9, 0.8, 0);
+        NeuralNetwork nn = new Perceptron(0.9, listPredicts, 0);
+        nn.setStructure(Type.INPUT, 1, 2);
+        nn.setStructure(Type.OUTPUT, 1, 1);
+        nn.setFunctionActivation(FunctionActivationData.DEGRAU);
         nn.setInputValues(list);
         nn.connectNeuronIncludingWeigth(0);
         nn.training();
-//        nn.save("rede.rn");
+//        nn.save("perceptron.rn");
 //        //Perceptron start
-//        NeuralNetwork perceptron = NeuralNetwork.load("rede.rn");
-//        double data1[] = {1, 0};
-//        double sample1[] = {0, 1, 0};
-//        perceptron.setData(data1);
+//        NeuralNetwork perceptron = NeuralNetwork.load("perceptron.rn");
+//        double data[] = {1, 1};
+//        perceptron.setData(data);
 //        perceptron.start();
 
         //Data set MNIST
