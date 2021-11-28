@@ -9,7 +9,7 @@ public class MnistTest {
         MnistData[] mnistData = new Mnist().readData("data/train-images.idx3-ubyte", "data/train-labels.idx1-ubyte");
 //        printMnistMatrix(mnistData[mnistData.length-1]);
         System.out.println("Data size: " + mnistData.length);
-        printMnistMatrix(mnistData[0]);
+        printMnistMatrix(mnistData[1]);
 
     }
 

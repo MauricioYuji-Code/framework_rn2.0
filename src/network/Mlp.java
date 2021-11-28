@@ -1,19 +1,19 @@
 package network;
 
-import Help.Helper;
+import Help.CalculatorHelper;
+import Help.ConnectionsHelper;
+import Help.Input;
 import core.Layer;
 import core.NeuralNetwork;
-import core.Neuron;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Random;
 
 
-public class Mlp extends NeuralNetwork implements Serializable {
+public class Mlp extends NeuralNetwork implements Serializable, Input {
     private double learningRate;
     private double predict;
     private double bias;
@@ -93,39 +93,28 @@ public class Mlp extends NeuralNetwork implements Serializable {
     }
 
     public void randomizeBias() {
-        Random random = new Random();
-        for (int i = 0; i < hidden.getNeuronsCount(); i++) {
-            double n = Math.floor(random.nextDouble() * 100) / 100;
-            bias_h.add(n);
-//            System.out.println("bias hidden: " + bias_h.get(i));
-        }
-
-        for (int i = 0; i < output.getNeuronsCount(); i++) {
-            double n = Math.floor(random.nextDouble() * 100) / 100;
-            bias_o.add(n);
-//            System.out.println("bias output: " + bias_o.get(i));
-        }
-
+        bias_h = ConnectionsHelper.fillBiasAccordingToNeurons(hidden);
+        bias_o = ConnectionsHelper.fillBiasAccordingToNeurons(output);
     }
 
     @Override
     public void setInputValues(ArrayList inputValues) {
-        samples = inputValues;
-//        System.out.println("Valores da camada de entrada: ");
-//        System.out.println("Qual é a lista da amostra: " + samplePositionList);
+        this.samples = inputValues;
+        double[] convertedData = convertData(samples, samplePositionList);
         for (int i = 0; i < input.getNeuronsCount(); i++) {
-            input.getNeurons().get(i).setInput(samples.get(samplePositionList)[i]);
+            input.getNeurons().get(i).setInput(convertedData[i]);//Generalizar entradas
+//            input.getNeurons().get(i).setInput(samples.get(samplePositionList)[i]);
 //            System.out.print(input.getNeurons().get(i).getNetInput());
 //            if (i % 28 == 0)
 //                System.out.println();
         }
-//        System.out.println("Posicao atual do inputvalues: " + samplePositionList);
+    }
 
+    public double[] convertData(ArrayList<double[]> samples, int index) {
+        return getInput(samples.get(index), Arrays.stream(samples.get(index)).max().getAsDouble(), Arrays.stream(samples.get(index)).min().getAsDouble());
     }
 
     public double getPredictValue(ArrayList predicts) {
-//        System.out.println("Valor do samplesPosition " + predictPositionList);
-//        System.out.println("Posicao atual do predicts: " + predictPositionList);
         return (double) predicts.get(predictPositionList);
     }
 
@@ -138,69 +127,22 @@ public class Mlp extends NeuralNetwork implements Serializable {
 
     @Override
     public void connectNeuronIncludingWeigth(double weigthValue) {
-//        System.out.println("Conectando os neurônios");
-        int i = 0;
-        int k = 0;
-//        System.out.println("Conectando da entrada até a oculta...");
-//        System.out.println("Numero de neuronios na oculta: " + hidden.getNeuronsCount());
-        while (i < input.getNeuronsCount()) {
-            for (int j = 0; j < hidden.getNeuronsCount(); j++) {
-                input.getNeurons().get(i).addInputConnection(hidden.getNeurons().get(j), weigthValue);
-//                System.out.println("O neurônio: " + input.getNeurons().get(i).getNetInput() + " quantas conexões: " + input.getNeurons().get(i).getInputConnections().size() + " e está conectado com o neurônio posição: " + j);
-            }
-            i++;
-        }
-//        System.out.println("Conectando da oculta até a saída...");
-//        System.out.println("Numero de neuronios na saida: " + output.getNeuronsCount());
-        while (k < hidden.getNeuronsCount()) {
-            for (int j = 0; j < output.getNeuronsCount(); j++) {
-                hidden.getNeurons().get(k).addInputConnection(output.getNeurons().get(j), weigthValue);
-//                System.out.println("O neurônio: " + hidden.getNeurons().get(k).getNetInput() + " quantas conexões: " + hidden.getNeurons().get(k).getInputConnections().size() + " e está conectado com o neurônio posição: " + j);
-            }
-            k++;
-        }
+        input = ConnectionsHelper.fillWeightsAccordingToNeuronsIncludingWeight(input, hidden, weigthValue);
+        hidden = ConnectionsHelper.fillWeightsAccordingToNeuronsIncludingWeight(hidden, output, weigthValue);
+        randomizeBias();
     }
 
     @Override
     public void connectNeuronIncludingRandomWeigth() {
-//        System.out.println("Conectando os neurônios");
-        int i = 0;
-        int k = 0;
-        Random random = new Random();
-
-//        System.out.println("Conectando da entrada até a oculta...");
-//        System.out.println("Numero de neuronios na oculta: " + hidden.getNeuronsCount());
-        while (i < input.getNeuronsCount()) {
-            for (int j = 0; j < hidden.getNeuronsCount(); j++) {
-//                System.out.println("numero aleatorio:" + random.nextDouble());
-                double n = Math.floor(random.nextDouble() * 100) / 100;
-                input.getNeurons().get(i).addInputConnection(hidden.getNeurons().get(j), n);
-//                System.out.println("O neurônio: " + input.getNeurons().get(i).getNetInput() + " quantas conexões: " + input.getNeurons().get(i).getInputConnections().size() + " e está conectado com o neurônio posição: " + j);
-            }
-            i++;
-        }
-//        System.out.println("Conectando da oculta até a saída...");
-//        System.out.println("Numero de neuronios na saida: " + output.getNeuronsCount());
-        while (k < hidden.getNeuronsCount()) {
-            for (int j = 0; j < output.getNeuronsCount(); j++) {
-                double n = Math.floor(random.nextDouble() * 100) / 100;
-                hidden.getNeurons().get(k).addInputConnection(output.getNeurons().get(j), n);
-//                System.out.println("O neurônio: " + hidden.getNeurons().get(k).getNetInput() + " quantas conexões: " + hidden.getNeurons().get(k).getInputConnections().size() + " e está conectado com o neurônio posição: " + j);
-            }
-            k++;
-        }
+        input = ConnectionsHelper.fillWeightsAccordingToNeurons(input, hidden);
+        hidden = ConnectionsHelper.fillWeightsAccordingToNeurons(hidden, output);
         randomizeBias();
     }
 
     @Override
     public void training() {
-//        System.out.println("Start MLP!!!");
-//        System.out.println("Start sum...");
         sum();
-//        System.out.println("Start check outputs...");
         while (!checkOutputsMNIST()) {
-//            System.out.println("A rede precisa de treinamento, resultado não corresponde com o esperado");
-//            System.out.println("iniciando treinamento...");
             backpropagationTest();
             activateCounters();
             sum();
@@ -236,60 +178,57 @@ public class Mlp extends NeuralNetwork implements Serializable {
 
     public void sum() {
 //        System.out.println("Realizando a somatória");
-        int auxHidden = 0;
-        int auxOutput = 0;
-        double aux = 0;
-//        ArrayList <Double> hiddenS = new ArrayList<>();
-//        ArrayList <Double> outputS = new ArrayList<>();
+//        int auxHidden = 0;
+//        int auxOutput = 0;
+//        double aux = 0;
+//
+//        while (auxHidden < hidden.getNeuronsCount()) {
+//            for (int i = 0; i < input.getNeuronsCount(); i++) {
+//                aux += input.getNeurons().get(i).getNetInput() * input.getNeurons().get(i).getInputConnections().get(auxHidden).getWeight().getValue();
+////                System.out.println("Valor da variavel aux da oculta: " + aux);
+//            }
+//            aux += bias_h.get(auxHidden);
+////            hiddenS.add(auxHidden, aux + bias);
+////            System.out.println("Valores da somatoria da camada oculta: " + hiddenS.get(auxHidden));
+////            hidden.getNeurons().get(auxHidden).setInput(FunctionActivation.sigmoid(aux));
+//            selectFunctionActivationHidden(auxHidden, aux);
+//            auxHidden++;
+//            aux = 0;
+//        }
+        CalculatorHelper.triggerSummation(input, hidden, bias_h, this, "hidden");
 
-        while (auxHidden < hidden.getNeuronsCount()) {
-            for (int i = 0; i < input.getNeuronsCount(); i++) {
-                aux += input.getNeurons().get(i).getNetInput() * input.getNeurons().get(i).getInputConnections().get(auxHidden).getWeight().getValue();
-//                System.out.println("Valor da variavel aux da oculta: " + aux);
-            }
-            aux += bias_h.get(auxHidden);
-//            hiddenS.add(auxHidden, aux + bias);
-//            System.out.println("Valores da somatoria da camada oculta: " + hiddenS.get(auxHidden));
-//            hidden.getNeurons().get(auxHidden).setInput(FunctionActivation.sigmoid(aux));
-            selectFunctionActivationHidden(auxHidden, aux);
-            auxHidden++;
-            aux = 0;
-        }
+//        while (auxOutput < output.getNeuronsCount()) {
+//            for (int i = 0; i < hidden.getNeuronsCount(); i++) {
+//                aux += hidden.getNeurons().get(i).getNetInput() * hidden.getNeurons().get(i).getInputConnections().get(auxOutput).getWeight().getValue();
+////                System.out.println("Valor da variavel aux da saida: " + aux);
+//            }
+//            aux += bias_o.get(auxOutput);
+////            outputS.add(auxOutput, aux + bias);
+////            System.out.println("Valores da somatoria da camada saida: " + outputS.get(auxOutput));
+////            output.getNeurons().get(auxOutput).setOutput(FunctionActivation.sigmoid(aux));
+//            selectFunctionActivationOutput(auxOutput, aux);
+//            auxOutput++;
+//            aux = 0;
+//        }
+        CalculatorHelper.triggerSummation(hidden, output, bias_o, this, "output");
 
-        while (auxOutput < output.getNeuronsCount()) {
-            for (int i = 0; i < hidden.getNeuronsCount(); i++) {
-                aux += hidden.getNeurons().get(i).getNetInput() * hidden.getNeurons().get(i).getInputConnections().get(auxOutput).getWeight().getValue();
-//                System.out.println("Valor da variavel aux da saida: " + aux);
-            }
-            aux += bias_o.get(auxOutput);
-//            outputS.add(auxOutput, aux + bias);
-//            System.out.println("Valores da somatoria da camada saida: " + outputS.get(auxOutput));
-//            output.getNeurons().get(auxOutput).setOutput(FunctionActivation.sigmoid(aux));
-            selectFunctionActivationOutput(auxOutput, aux);
-            auxOutput++;
-            aux = 0;
-        }
     }
 
-    public void selectFunctionActivationHidden(int auxHidden, double aux) {
+    public void startFunctionActivation(int ref, double aux, Layer layer, String label) {
         if (getFunctionActivation().name().equals("DEGRAU")) {
-            hidden.getNeurons().get(auxHidden).setInput(FunctionActivation.degrau(aux));
+            if (label.equals("output")) {
+                layer.getNeurons().get(ref).setOutput(FunctionActivation.degrau(aux));
+            } else {
+                layer.getNeurons().get(ref).setInput(FunctionActivation.degrau(aux));
+            }
         } else if (getFunctionActivation().name().equals("SIGMOID")) {
-            hidden.getNeurons().get(auxHidden).setInput(FunctionActivation.sigmoid(aux));
-//            System.out.println("Valor da hidden dps da funcao de ativacao" + hidden.getNeurons().get(auxHidden).getNetInput());
+            if (label.equals("output")) {
+                layer.getNeurons().get(ref).setOutput(FunctionActivation.sigmoid(aux));
+            } else
+                layer.getNeurons().get(ref).setInput(FunctionActivation.sigmoid(aux));
         }
     }
 
-    public void selectFunctionActivationOutput(int auxOutput, double aux) {
-        if (getFunctionActivation().name().equals("DEGRAU")) {
-            output.getNeurons().get(auxOutput).setOutput(FunctionActivation.degrau(aux));
-        } else if (getFunctionActivation().name().equals("SIGMOID")) {
-            //Math.round(media * 100.0)/100.0
-//            output.getNeurons().get(auxOutput).setOutput(Math.floor(FunctionActivation.sigmoid(aux)*10000)/10000);
-            output.getNeurons().get(auxOutput).setOutput(FunctionActivation.sigmoid(aux));
-//            System.out.println("Valor do output dps da funcao de ativacao" + output.getNeurons().get(auxOutput).getNetInput());
-        }
-    }
 
     public boolean checkOutputs() {
         int s = 0;
@@ -310,17 +249,16 @@ public class Mlp extends NeuralNetwork implements Serializable {
     }
 
     public boolean checkOutputsMNIST() {
-//        int s = 0;
         this.predictPositionList = samplePositionList;
         for (int i = 0; i < output.getNeuronsCount(); i++) {
             outputs.add(output.getNeurons().get(i).getOutput());
             System.out.println("Posição da lista: " + i + " Saída armazenada: " + outputs.get(i));
         }
 //        System.out.println("max da lista: " + Collections.max(outputs) + " position: " + outputs.indexOf(Collections.max(outputs)));
+//        System.out.println("Predict Position List: " + predictPositionList + ", Sample Position List: " + samplePositionList);
         if (outputs.indexOf(Collections.max(outputs)) == getPredictValue(predicts)) {
 //            System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + predict + " (SUCESSO)");
             System.out.println("Retornou: " + outputs.indexOf(Collections.max(outputs)) + " e o valor esperado é: " + getPredictValue(predicts) + " (SUCESSO)");
-//            s++;
             outputs.clear();
             return true;
         } else {
@@ -333,10 +271,7 @@ public class Mlp extends NeuralNetwork implements Serializable {
     }
 
     public void trainWiththeNextSamples() {
-//        Helper.drawLine();
-//        System.out.println("Começando o treinamento!");
         samplePositionList++;
-//        System.out.println("Posição da lista de amostras e de predicts: " + samplePositionList);
         setInputValues(samples);
         samplesCount++;
         training();
@@ -565,17 +500,6 @@ public class Mlp extends NeuralNetwork implements Serializable {
 //            System.out.println("auxConnectionsInput: " + auxConnectionsInput);
             auxConnectionsInput++;
         }
-
-        errorListO.clear();
-        errorListD_O.clear();
-        gradiente_O.clear();
-        gradiente_lr_O.clear();
-        deltaOW.clear();
-        errorListH.clear();
-        errorListHiddenD.clear();
-        gradiente_H.clear();
-        gradiente_lr_H.clear();
-        deltaHW.clear();
     }
 
     public double errorCalc(double t, double s) {
@@ -609,8 +533,6 @@ public class Mlp extends NeuralNetwork implements Serializable {
 //        return deltaW + w;
     }
 
-    //Todo realizar as epochs
-    //Todo solução para duas saídas
     /*GETTERS E SETTERS*/
     public FunctionActivationData getFunctionActivation() {
         return functionActivation;
@@ -638,4 +560,15 @@ public class Mlp extends NeuralNetwork implements Serializable {
         this.predict = predict;
     }
 
+    @Override
+    public double[] getInput(double[] in, double max, double min) {
+        System.out.println("Max: " + max + "Min: " + min);
+        double[] result = new double[in.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = in[i] / (max - min);
+//            System.out.println(result[i]);
+        }
+
+        return result;
+    }
 }

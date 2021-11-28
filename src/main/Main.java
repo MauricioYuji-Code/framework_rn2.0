@@ -20,33 +20,33 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //Perceptron
-        double sample1[] = {0, 1};
-        double sample2[] = {1, 0};
-        double sample3[] = {0, 0};
-        double sample4[] = {1, 1};
-        ArrayList<double[]> list = new ArrayList<>();
-        list.add(0, sample1);
+//        double sample1[] = {0, 1};
+//        double sample2[] = {1, 0};
+//        double sample3[] = {0, 0};
+//        double sample4[] = {1, 1};
+//        ArrayList<double[]> list = new ArrayList<>();
+//        list.add(0, sample1);
 //        list.add(1, sample2);
 //        list.add(2, sample3);
 //        list.add(3, sample4);
-        ArrayList<Double> listPredicts = new ArrayList<>();
-        listPredicts.add(1.0);
+//        ArrayList<Double> listPredicts = new ArrayList<>();
+//        listPredicts.add(1.0);
 //        listPredicts.add(1.0);
 //        listPredicts.add(0.0);
 //        listPredicts.add(1.0);
 
 //        NeuralNetwork nn = new Perceptron(0.9, 0.8, 0);
-        NeuralNetwork nn = new Perceptron(0.9, listPredicts, 0);
-        nn.setStructure(Type.INPUT, 1, 2);
-        nn.setStructure(Type.OUTPUT, 1, 1);
-        nn.setFunctionActivation(FunctionActivationData.DEGRAU);
-        nn.setInputValues(list);
-        nn.connectNeuronIncludingWeigth(0);
-        nn.training();
+//        NeuralNetwork nn = new Perceptron(0.9, listPredicts, 0);
+//        nn.setStructure(Type.INPUT, 1, 2);
+//        nn.setStructure(Type.OUTPUT, 1, 1);
+//        nn.setFunctionActivation(FunctionActivationData.DEGRAU);
+//        nn.setInputValues(list);
+//        nn.connectNeuronIncludingWeigth(0);
+//        nn.training();
 //        nn.save("perceptron.rn");
 //        //Perceptron start
 //        NeuralNetwork perceptron = NeuralNetwork.load("perceptron.rn");
-//        double data[] = {1, 1};
+//        double data[] = {0, 0};
 //        perceptron.setData(data);
 //        perceptron.start();
 
@@ -60,25 +60,23 @@ public class Main {
         ArrayList <double[]> mnistSamples = new ArrayList<>();
         ArrayList <Double> mnistPredicts = new ArrayList<>();
         for (int i = 0 ; i < 2 ; i ++){
-            double[] mnistDataConverted = mnistInput.getInputArray(mnistData[i], 255, 0);
+//            double[] mnistDataConverted = mnistInput.getInputArray(mnistData[i], 255, 0);
 //            double[] mnistDataConverted = mnistInput.getInputArray(mnistData[i]);
-            mnistSamples.add(mnistDataConverted);
+//            mnistSamples.add(mnistDataConverted);
+            mnistSamples.add(mnistInput.getInputArray(mnistData[i]));
             mnistPredicts.add((double) mnistData[i].getLabel());
         }
-//        System.out.println(mnistSamples.size());
-//        System.out.println(mnistPredicts.size());
-        double[] mnistDataConverted = mnistInput.getInputArray(mnistData[1], 255, 0);
-//        System.out.println(mnistData[0].getLabel());
+//        double[] mnistDataConverted = mnistInput.getInputArray(mnistData[0], 255, 0);
 
         //Teste com múltiplas entradas
-//        NeuralNetwork nn3 = new Mlp(0.9, mnistPredicts);
-//        nn3.setStructure(Type.INPUT, 1, 784);
-//        nn3.setStructure(Type.HIDDEN, 1, 5);
-//        nn3.setStructure(Type.OUTPUT, 1, 10);
-//        nn3.connectNeuronIncludingRandomWeigth();
-//        nn3.setFunctionActivation(FunctionActivationData.SIGMOID);
-//        nn3.setInputValues(mnistSamples);
-//        nn3.training();
+        NeuralNetwork nn3 = new Mlp(0.8, mnistPredicts);
+        nn3.setStructure(Type.INPUT, 1, 784);
+        nn3.setStructure(Type.HIDDEN, 1, 5);
+        nn3.setStructure(Type.OUTPUT, 1, 10);
+        nn3.connectNeuronIncludingRandomWeigth();
+        nn3.setFunctionActivation(FunctionActivationData.SIGMOID);
+        nn3.setInputValues(mnistSamples);
+        nn3.training();
 //        nn3.save("rede-mlp.rn");
 //        NeuralNetwork mlp = NeuralNetwork.load("rede-mlp-mnist.rn");
 //        mlp.setData(mnistDataConverted);

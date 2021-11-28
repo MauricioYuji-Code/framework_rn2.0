@@ -7,7 +7,6 @@ import utils.Report;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -171,4 +170,6 @@ public class NeuralNetwork implements Serializable {
     public void setPredictValue(double predictValue) {
     }
 
+    public void startFunctionActivation(int indicatorLayer, double resultSumNeuron, Layer destination, String label) {
+    }
 }
