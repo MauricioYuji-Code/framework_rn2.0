@@ -131,11 +131,9 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
     }
 
     public void setData(double[] data) {
-        System.out.println("passou por aqui");
         data = getInput(data, Arrays.stream(data).max().getAsDouble(), Arrays.stream(data).min().getAsDouble());
         for (int i = 0; i < input.getNeuronsCount(); i++) {
             input.getNeurons().get(i).setInput(data[i]);
-//            System.out.println(input.getNeurons().get(i).getNetInput());
         }
     }
 
@@ -163,6 +161,7 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
                     activateCounters();
                     sum();
                     if (numberOfTrainings != 0 && numberOfTrainings == trainings) {
+                        this.end = false;
                         System.out.println("Fim da execução");
                         break;
                     }
@@ -183,7 +182,7 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
                 break;
         }
         if (end == true)
-        checkNextSamples();
+            checkNextSamples();
     }
 
     public void checkNextSamples() {
@@ -310,9 +309,7 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
         backpropagationHiddenToAny();
     }
 
-    //provisório
-    public void backpropagationOutputToHidden() {
-        //Oculta para a saída
+    public void calculateError() {
         /*
         Formação do arraylist do calculo de cada erro (E)
          */
@@ -331,14 +328,20 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
         } else if (predictType.equals("degression") && predicts.size() > 0) {
             errorListO.add(getPredictValue(predicts) - output.getNeurons().get(0).getOutput());
         }
+    }
 
+    public void backpropagationOutputToHidden() {
+        //Oculta para a saída
+        calculateError();
         /*
         Formação do arraylist de derivadas da sigmoid da saída (d(S))
          */
-        ArrayList<Double> errorListD_O = new ArrayList<>();
-        for (int i = 0; i < output.getNeuronsCount(); i++) {
-            errorListD_O.add(i, FunctionActivation.sigmoidDer(output.getNeurons().get(i).getOutput()));
-        }
+//        ArrayList<Double> errorListD_O = new ArrayList<>();
+//        for (int i = 0; i < output.getNeuronsCount(); i++) {
+//            errorListD_O.add(i, FunctionActivation.sigmoidDer(output.getNeurons().get(i).getOutput()));
+//        }
+        ArrayList<Double> errorListD_O = CalculatorHelper.calculateDerivativesOfTheOutputNoReferenceList(output);
+
         /*
         Gradiente - multiplicação da errorListD com errorList e formar um arraylist gradiente (E o d(S))
          */
@@ -355,21 +358,24 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
 //            bias_o.set(i, bias_o.get(i) + gradiente_lr_O.get(i));
 //        }
         bias_o = CalculatorHelper.addListByListAccordingToNumberOfNeurons(output, bias_o, gradiente_lr_O); //Todo Retestar pois esta esquisito
-        this.deltaOW = new ArrayList<>();
-        int auxConnectionsHidden = 0;
-        while (auxConnectionsHidden < hidden.getNeuronsCount()) {
-            for (int i = 0; i < hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().size(); i++) {
-                deltaOW.add(i, deltaWeigthCalc2(gradiente_lr_O.get(i), hidden.getNeurons().get(auxConnectionsHidden).getNetInput()));
-            }
-            auxConnectionsHidden++;
-        }
-        auxConnectionsHidden = 0;
-        while (auxConnectionsHidden < hidden.getNeuronsCount()) {
-            for (int i = 0; i < hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().size(); i++) {
-                hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().setValue(newWeightCalc(hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().getValue(), deltaOW.get(auxConnectionsHidden)));
-            }
-            auxConnectionsHidden++;
-        }
+//        this.deltaOW = new ArrayList<>();
+//        int auxConnectionsHidden = 0;
+//        while (auxConnectionsHidden < hidden.getNeuronsCount()) {
+//            for (int i = 0; i < hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().size(); i++) {
+//                deltaOW.add(i, deltaWeigthCalc2(gradiente_lr_O.get(i), hidden.getNeurons().get(auxConnectionsHidden).getNetInput()));
+//            }
+//            auxConnectionsHidden++;
+//        }
+        deltaOW = CalculatorHelper.calculateDeltaWeight(hidden, gradiente_lr_O, this);
+
+//        int auxConnectionsHidden = 0;
+//        while (auxConnectionsHidden < hidden.getNeuronsCount()) {
+//            for (int i = 0; i < hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().size(); i++) {
+//                hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().setValue(newWeightCalc(hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().getValue(), deltaOW.get(auxConnectionsHidden)));
+//            }
+//            auxConnectionsHidden++;
+//        }
+        hidden = CalculatorHelper.calculateNewWeight(hidden, deltaOW, this);
     }
 
     public void backpropagationHiddenToAny() {
@@ -377,25 +383,26 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
         /*
         Formação do arraylist do calculo de cada erro
          */
-        ArrayList<Double> errorListH = new ArrayList<>();
-        int auxConnectionsHidden = 0;
-        double valueHiddenError = 0;
-        while (auxConnectionsHidden < hidden.getNeuronsCount()) {
-            for (int i = 0; i < hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().size(); i++) {
-                valueHiddenError += hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().getValue() * errorListO.get(i);
-            }
-//            System.out.println("Valor do valueHiddenError: " + valueHiddenError);
-            errorListH.add(auxConnectionsHidden, valueHiddenError);
-            auxConnectionsHidden++;
-        }
+//        ArrayList<Double> errorListH = new ArrayList<>();
+//        int auxConnectionsHidden = 0;
+//        double valueHiddenError = 0;
+//        while (auxConnectionsHidden < hidden.getNeuronsCount()) {
+//            for (int i = 0; i < hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().size(); i++) {
+//                valueHiddenError += hidden.getNeurons().get(auxConnectionsHidden).getInputConnections().get(i).getWeight().getValue() * errorListO.get(i);
+//            }
+//            errorListH.add(auxConnectionsHidden, valueHiddenError);
+//            auxConnectionsHidden++;
+//        }
+        ArrayList<Double> errorListH = CalculatorHelper.calculateHiddenLayerError(hidden, errorListO);
 
         /*
         Formação do arraylist de derivadas da sigmoid da saída
          */
-        ArrayList<Double> errorListHiddenD = new ArrayList<>();
-        for (int i = 0; i < hidden.getNeuronsCount(); i++) {
-            errorListHiddenD.add(i, FunctionActivation.sigmoidDer(errorListH.get(i)));
-        }
+//        ArrayList<Double> errorListHiddenD = new ArrayList<>();
+//        for (int i = 0; i < hidden.getNeuronsCount(); i++) {
+//            errorListHiddenD.add(i, FunctionActivation.sigmoidDer(errorListH.get(i)));
+//        }
+        ArrayList<Double> errorListHiddenD = CalculatorHelper.calculateDerivativesOfTheOutput(hidden, errorListH);
         /*
         Gradiente - multiplicação da errorListD com errorList e formar um arraylist gradiente
          */
@@ -411,26 +418,27 @@ public class Mlp extends NeuralNetwork implements Serializable, Input {
 //            bias_h.set(i, bias_h.get(i) + gradiente_lr_H.get(i));
 //        }
         bias_h = CalculatorHelper.addListByListAccordingToNumberOfNeurons(hidden, bias_h, gradiente_lr_H); //Todo Retestar pois esta esquisito
-        this.deltaHW = new ArrayList<>();
-        int auxConnectionsInput = 0;
-        while (auxConnectionsInput < input.getNeuronsCount()) {
-            for (int i = 0; i < input.getNeurons().get(auxConnectionsInput).getInputConnections().size(); i++) {
-                deltaHW.add(i, deltaWeigthCalc2(gradiente_lr_H.get(i), input.getNeurons().get(auxConnectionsInput).getNetInput()));
-//                System.out.println("Valores inseridos dentro da lista deltaHW: " + deltaHW.get(i));
-            }
-            auxConnectionsInput++;
-        }
-
-        auxConnectionsInput = 0;
-        while (auxConnectionsInput < input.getNeuronsCount()) {
-//            System.out.println("Calculando novos pesos da oculta até a entrada...");
-            for (int i = 0; i < input.getNeurons().get(auxConnectionsInput).getInputConnections().size(); i++) {
-                input.getNeurons().get(auxConnectionsInput).getInputConnections().get(i).getWeight().setValue(newWeightCalc(input.getNeurons().get(auxConnectionsInput).getInputConnections().get(i).getWeight().getValue(), deltaHW.get(auxConnectionsInput)));
-//                System.out.println("Valores dos novos pesos: " + input.getNeurons().get(auxConnectionsInput).getInputConnections().get(i).getWeight().getValue());
-            }
-//            System.out.println("auxConnectionsInput: " + auxConnectionsInput);
-            auxConnectionsInput++;
-        }
+//        this.deltaHW = new ArrayList<>();
+//        int auxConnectionsInput = 0;
+//        while (auxConnectionsInput < input.getNeuronsCount()) {
+//            for (int i = 0; i < input.getNeurons().get(auxConnectionsInput).getInputConnections().size(); i++) {
+//                deltaHW.add(i, deltaWeigthCalc2(gradiente_lr_H.get(i), input.getNeurons().get(auxConnectionsInput).getNetInput()));
+////                System.out.println("Valores inseridos dentro da lista deltaHW: " + deltaHW.get(i));
+//            }
+//            auxConnectionsInput++;
+//        }
+        deltaHW = CalculatorHelper.calculateDeltaWeight(input, gradiente_lr_H, this);
+//        int auxConnectionsInput = 0;
+//        while (auxConnectionsInput < input.getNeuronsCount()) {
+////            System.out.println("Calculando novos pesos da oculta até a entrada...");
+//            for (int i = 0; i < input.getNeurons().get(auxConnectionsInput).getInputConnections().size(); i++) {
+//                input.getNeurons().get(auxConnectionsInput).getInputConnections().get(i).getWeight().setValue(newWeightCalc(input.getNeurons().get(auxConnectionsInput).getInputConnections().get(i).getWeight().getValue(), deltaHW.get(auxConnectionsInput)));
+////                System.out.println("Valores dos novos pesos: " + input.getNeurons().get(auxConnectionsInput).getInputConnections().get(i).getWeight().getValue());
+//            }
+////            System.out.println("auxConnectionsInput: " + auxConnectionsInput);
+//            auxConnectionsInput++;
+//        }
+        input = CalculatorHelper.calculateNewWeight(input, deltaHW, this);
     }
 
     public double errorCalc(double t, double s) {

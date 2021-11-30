@@ -53,6 +53,73 @@ public class CalculatorHelper {
         return result;
     }
 
+    public static ArrayList<Double> calculateHiddenLayerError(Layer layer, ArrayList<Double> list) {
+        ArrayList<Double> result = new ArrayList<>();
+        int connections = 0;
+        double valueHiddenError = 0;
+        while (connections < layer.getNeuronsCount()) {
+            for (int i = 0; i < layer.getNeurons().get(connections).getInputConnections().size(); i++) {
+                valueHiddenError += layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().getValue() * list.get(i);
+            }
+            result.add(connections, valueHiddenError);
+            connections++;
+        }
+        return result;
+    }
+
+    public static ArrayList<Double> calculateDeltaWeight(Layer layer, ArrayList<Double> list, NeuralNetwork neuralNetwork) {
+        ArrayList<Double> result = new ArrayList<>();
+        int connections = 0;
+        while (connections < layer.getNeuronsCount()) {
+            for (int i = 0; i < layer.getNeurons().get(connections).getInputConnections().size(); i++) {
+                result.add(neuralNetwork.deltaWeigthCalc2(list.get(i), layer.getNeurons().get(connections).getNetInput()));
+            }
+            connections++;
+        }
+        return result;
+    }
+
+    public static Layer calculateNewWeight(Layer layer, ArrayList<Double> list, NeuralNetwork neuralNetwork) {
+        int connections = 0;
+        while (connections < layer.getNeuronsCount()) {
+            for (int i = 0; i < layer.getNeurons().get(connections).getInputConnections().size(); i++) {
+                layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().setValue(neuralNetwork.newWeightCalc(layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().getValue(), list.get(connections)));
+            }
+            connections++;
+        }
+//        Layer layerResult = layer;
+        return layer;
+    }
+
+//    public static Layer test(Layer layer, ArrayList<Double> list, NeuralNetwork neuralNetwork) {
+//        Layer layerResult = new Layer();
+//        int connections = 0;
+//        while (connections < layer.getNeuronsCount()) {
+//            for (int i = 0; i < layer.getNeurons().get(connections).getInputConnections().size(); i++) {
+//                layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().setValue(neuralNetwork.newWeightCalc(layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().getValue(), list.get(connections)));
+//            }
+//            connections++;
+//        }
+//        return layerResult;
+//    }
+
+    //Todo Deixar genérico
+    public static ArrayList<Double> calculateDerivativesOfTheOutput(Layer layer, ArrayList<Double> list) {
+        ArrayList<Double> result = new ArrayList<>();
+        for (int i = 0; i < layer.getNeuronsCount(); i++) {
+            result.add(i, FunctionActivation.sigmoidDer(list.get(i)));
+        }
+        return result;
+    }
+
+    public static ArrayList<Double> calculateDerivativesOfTheOutputNoReferenceList(Layer layer) {
+        ArrayList<Double> result = new ArrayList<>();
+        for (int i = 0; i < layer.getNeuronsCount(); i++) {
+            result.add(i, FunctionActivation.sigmoidDer(layer.getNeurons().get(i).getOutput()));
+        }
+        return result;
+    }
+
     public static double round(double n) {
         if (n > 0.98) {
             return 1;

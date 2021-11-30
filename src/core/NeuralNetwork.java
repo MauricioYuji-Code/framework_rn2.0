@@ -176,4 +176,11 @@ public class NeuralNetwork implements Serializable {
     public void setNumberOfTrainings(int numberOfTrainings) {
     }
 
+    public double deltaWeigthCalc2(double aDouble, double netInput) {
+        return 0.0;
+    }
+
+    public double newWeightCalc(double value, double aDouble) {
+        return 0.0;
+    }
 }
