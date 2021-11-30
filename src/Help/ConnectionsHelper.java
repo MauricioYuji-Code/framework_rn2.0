@@ -16,24 +16,28 @@ public class ConnectionsHelper {
 
     public static Layer fillWeightsAccordingToNeurons(Layer initiation, Layer destination) {
         int i = 0;
+        Layer result;
         while (i < initiation.getNeuronsCount()) {
             for (int j = 0; j < destination.getNeuronsCount(); j++) {
                 initiation.getNeurons().get(i).addInputConnection(destination.getNeurons().get(j), RandomHelper.randomizeNumberMinMax(-1, 1));
             }
             i++;
         }
-        return initiation;
+        result = initiation;
+        return result;
     }
 
     public static Layer fillWeightsAccordingToNeuronsIncludingWeight(Layer initiation, Layer destination, double weigthValue) {
         int i = 0;
+        Layer result;
         while (i < initiation.getNeuronsCount()) {
             for (int j = 0; j < destination.getNeuronsCount(); j++) {
                 initiation.getNeurons().get(i).addInputConnection(destination.getNeurons().get(j), weigthValue);
             }
             i++;
         }
-        return initiation;
+        result = initiation;
+        return result;
     }
 
 }

@@ -172,4 +172,8 @@ public class NeuralNetwork implements Serializable {
 
     public void startFunctionActivation(int indicatorLayer, double resultSumNeuron, Layer destination, String label) {
     }
+
+    public void setNumberOfTrainings(int numberOfTrainings) {
+    }
+
 }

@@ -51,15 +51,11 @@ public class Main {
 //        perceptron.start();
 
         //Data set MNIST
-//        ArrayList<Number> mnistDataUnconverted = Mnist.generateDataMNIST();
-//        MNISTInput mnistInput = new MNISTInput();
-//        double[] mnistDataConverted = mnistInput.getInput(mnistDataUnconverted, 255, 0);
-
         MNISTInput mnistInput = new MNISTInput();
         MnistData[] mnistData = new Mnist().readData("data/train-images.idx3-ubyte", "data/train-labels.idx1-ubyte");
-        ArrayList <double[]> mnistSamples = new ArrayList<>();
-        ArrayList <Double> mnistPredicts = new ArrayList<>();
-        for (int i = 0 ; i < 2 ; i ++){
+        ArrayList<double[]> mnistSamples = new ArrayList<>();
+        ArrayList<Double> mnistPredicts = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
 //            double[] mnistDataConverted = mnistInput.getInputArray(mnistData[i], 255, 0);
 //            double[] mnistDataConverted = mnistInput.getInputArray(mnistData[i]);
 //            mnistSamples.add(mnistDataConverted);
@@ -67,7 +63,6 @@ public class Main {
             mnistPredicts.add((double) mnistData[i].getLabel());
         }
 //        double[] mnistDataConverted = mnistInput.getInputArray(mnistData[0], 255, 0);
-
         //Teste com múltiplas entradas
         NeuralNetwork nn3 = new Mlp(0.8, mnistPredicts);
         nn3.setStructure(Type.INPUT, 1, 784);
@@ -76,12 +71,43 @@ public class Main {
         nn3.connectNeuronIncludingRandomWeigth();
         nn3.setFunctionActivation(FunctionActivationData.SIGMOID);
         nn3.setInputValues(mnistSamples);
+        nn3.setNumberOfTrainings(100);
         nn3.training();
-//        nn3.save("rede-mlp.rn");
-//        NeuralNetwork mlp = NeuralNetwork.load("rede-mlp-mnist.rn");
-//        mlp.setData(mnistDataConverted);
+        nn3.save("teste-rede-mlp-mnist2.rn");
+//        NeuralNetwork mlp = NeuralNetwork.load("teste-rede-mlp-mnist.rn");
+//        mlp.setData(mnistSamples.get(0));
 //        mlp.start();
 
+        //            teste com degression
+//        double[] deg = {1.0, 1.0};
+//        double[] deg2 = {1.0, 0.0};
+//        double[] deg3 = {0.0, 0.0};
+//        double[] deg4 = {0.0, 1.0};
+//        ArrayList<double[]> degs = new ArrayList<>();
+//        degs.add(deg);
+//        degs.add(deg2);
+//        degs.add(deg3);
+//        degs.add(deg4);
+//        ArrayList<Double> predictsDegs = new ArrayList<>();
+//        predictsDegs.add(1.0);
+//        predictsDegs.add(1.0);
+//        predictsDegs.add(0.0);
+//        predictsDegs.add(1.0);
+////
+//        NeuralNetwork nn4 = new Mlp(0.5, predictsDegs);
+//        nn4.setStructure(Type.INPUT, 1, 2);
+//        nn4.setStructure(Type.HIDDEN, 1, 2);
+//        nn4.setStructure(Type.OUTPUT, 1, 1);
+//        nn4.connectNeuronIncludingRandomWeigth();
+//        nn4.setFunctionActivation(FunctionActivationData.SIGMOID);
+//        nn4.setInputValues(degs);
+//        nn4.setNumberOfTrainings(2);
+//        nn4.training();
+//        nn4.save("rede-mlp-d-nok.rn");
+//        NeuralNetwork mlp = NeuralNetwork.load("rede-mlp-d-nok.rn");
+//        double[] testData = {0, 0};
+//        mlp.setData(testData);
+//        mlp.start();
 
         //MLP treinamento
 //        NeuralNetwork nn2 = new Mlp(0.9, mnistData[2].getLabel(), 0);

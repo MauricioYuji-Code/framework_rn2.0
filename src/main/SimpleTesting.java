@@ -1,13 +1,26 @@
 package main;
 
 
+import Help.RandomHelper;
+
 import java.util.Arrays;
 import java.util.Random;
 
 public class SimpleTesting {
     public static void main(String[] args) {
-        Random random = new Random();
-        double n = Math.floor(random.nextDouble() * 100) / 100;
-        System.out.println(n);
+
+        boolean n = false;
+        while(test()){
+            System.out.println("teste");
+
+            if (n == false){
+                break;
+            }
+        }
+
+    }
+
+    public static boolean test(){
+        return true;
     }
 }
