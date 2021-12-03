@@ -91,18 +91,6 @@ public class CalculatorHelper {
         return layer;
     }
 
-//    public static Layer test(Layer layer, ArrayList<Double> list, NeuralNetwork neuralNetwork) {
-//        Layer layerResult = new Layer();
-//        int connections = 0;
-//        while (connections < layer.getNeuronsCount()) {
-//            for (int i = 0; i < layer.getNeurons().get(connections).getInputConnections().size(); i++) {
-//                layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().setValue(neuralNetwork.newWeightCalc(layer.getNeurons().get(connections).getInputConnections().get(i).getWeight().getValue(), list.get(connections)));
-//            }
-//            connections++;
-//        }
-//        return layerResult;
-//    }
-
     //Todo Deixar genérico
     public static ArrayList<Double> calculateDerivativesOfTheOutput(Layer layer, ArrayList<Double> list) {
         ArrayList<Double> result = new ArrayList<>();
